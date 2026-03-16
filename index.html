@@ -3,9 +3,8 @@
 <head>
 
 <!-- ================= INÍCIO DO CÓDIGO CAMALEÃO ================= -->
-<!-- ================= INÍCIO DO CÓDIGO CAMALEÃO ================= -->
 <script>
-    // CÓDIGO CAMALEÃO v8.0 (Desintegração Total de Títulos e Botões)
+    // CÓDIGO CAMALEÃO v9.1 (Atualizado para o Divisor Inteligente)
     window.addEventListener('message', function(event) {
         if (event.data) {
             
@@ -33,7 +32,7 @@
                 ].join(', ');
 
                 document.querySelectorAll(seletores).forEach(function(el) { 
-                    el.style.display = 'none'; 
+                    if(el) el.style.display = 'none'; 
                 });
 
                 // ATAQUE 2: Caçador de Elementos Iniciais (Destrói o primeiro título da página)
@@ -58,6 +57,7 @@
 
                     // 3.2 Caça Títulos Rebeldes (Nomes exatos das ferramentas)
                     const nomesProibidos = [
+                        'divisor inteligente', // <-- ADICIONADO PARA O NOVO APP
                         'divisor de texto', 
                         'conversor de roteiro para .srt', 
                         'conversor para .srt',
@@ -139,8 +139,6 @@
     });
 </script>
 <!-- ================= FIM DO CÓDIGO CAMALEÃO ================= -->
-<!-- ================= FIM DO CÓDIGO CAMALEÃO ================= -->
-
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
