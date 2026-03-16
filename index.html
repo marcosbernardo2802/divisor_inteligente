@@ -3,51 +3,44 @@
 <head>
 
 <!-- ================= INÍCIO DO CÓDIGO CAMALEÃO ================= -->
+<!-- CÓDIGO CAMALEÃO V9.1 (Versão Estável) -->
+<style>
+    /* Oculta a barra de rolagem dupla dentro do iframe para usar apenas a da Nave-Mãe */
+    ::-webkit-scrollbar { display: none; }
+    * { scrollbar-width: none; }
+</style>
+
 <script>
+    // 1. Recebe o sinal de camuflagem (Tema) da Nave-Mãe
     window.addEventListener('message', function(event) {
         if (event.data && event.data.action === 'setTheme') {
             const isLight = event.data.theme === 'light';
+            
+            // Alterna as classes nativas do Tailwind e do CSS padrão
             if (isLight) {
                 document.documentElement.classList.remove('dark');
+                document.body.classList.remove('dark-theme');
                 document.body.classList.add('light-theme');
             } else {
                 document.documentElement.classList.add('dark');
                 document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
             }
         }
     });
 
-    const camaleaoStyle = document.createElement('style');
-    camaleaoStyle.innerHTML = `
-        html, body, #root, #__next { background: transparent !important; background-color: transparent !important; }
-        :root {
-            --color-card-bg: #1e1e20 !important;
-            --color-text: #e3e3e3 !important;
-            --color-card-border: #333537 !important;
-        }
-        body.light-theme {
-            --color-card-bg: #f0f4f9 !important;
-            --color-text: #1f1f1f !important;
-            --color-card-border: #d1d9e0 !important;
-        }
-        /* Varredura Total Tailwind */
-        [class*="bg-gray-"], [class*="bg-slate-"], [class*="bg-zinc-"], [class*="bg-neutral-"], .bg-white, .bg-black { 
-            background-color: var(--color-card-bg) !important; 
-            border-color: var(--color-card-border) !important;
-        }
-        [class*="text-gray-"], [class*="text-slate-"], [class*="text-zinc-"], .text-white, .text-black { 
-            color: var(--color-text) !important; 
-        }
-        ::-webkit-scrollbar { display: none; }
-        * { scrollbar-width: none; }
-    `;
-    document.head.appendChild(camaleaoStyle);
-
-    // Envia altura para o Portal
+    // 2. Envia a altura dinâmica para a Nave-Mãe (Permite expansão infinita sem cortes)
     const observer = new ResizeObserver(() => {
-        window.parent.postMessage({ action: 'resizeIframe', height: document.body.scrollHeight + 50 }, '*');
+        // Envia a altura total do body + uma margem de segurança de 50px
+        window.parent.postMessage({ 
+            action: 'resizeIframe', 
+            height: document.body.scrollHeight + 50 
+        }, '*');
     });
-    window.addEventListener('DOMContentLoaded', () => observer.observe(document.body));
+    
+    window.addEventListener('DOMContentLoaded', () => {
+        observer.observe(document.body);
+    });
 </script>
 <!-- ================= FIM DO CÓDIGO CAMALEÃO ================= -->
     
