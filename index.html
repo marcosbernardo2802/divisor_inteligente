@@ -1,73 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
-<!-- ================= INÍCIO DO CÓDIGO CAMALEÃO ================= -->
-<!-- 
-  CÓDIGO CAMALEÃO V9.1 - EDIÇÃO ESPECIAL GEMINI
-  Desenvolvido especificamente para o Divisor de Texto Inteligente 
--->
-<style>
-    /* Oculta scrollbars internas para usar a da Nave-Mãe */
-    ::-webkit-scrollbar { display: none !important; }
-    * { scrollbar-width: none !important; }
-
-    /* Ajustes de transparência para fusão total com o Portal */
-    body { background: transparent !important; }
-    .container { 
-        box-shadow: none !important; 
-        background-color: var(--container-bg) !important;
-    }
-</style>
-
-<script>
-    // 1. RECEPÇÃO DE SINAL DE TEMA (Nave-Mãe -> App)
-    window.addEventListener('message', function(event) {
-        if (event.data && event.data.action === 'setTheme') {
-            const isLight = event.data.theme === 'light';
-            
-            // Ajuste específico para as classes deste App (light-mode)
-            if (isLight) {
-                document.body.classList.add('light-mode');
-                // Troca o ícone do botão de tema se ele existir
-                const themeIcon = document.querySelector('#theme-toggle i');
-                if (themeIcon) { themeIcon.className = 'fas fa-sun'; }
-            } else {
-                document.body.classList.remove('light-mode');
-                const themeIcon = document.querySelector('#theme-toggle i');
-                if (themeIcon) { themeIcon.className = 'fas fa-moon'; }
-            }
-        }
-    });
-
-    // 2. TRANSMISSÃO DE ALTURA (App -> Nave-Mãe)
-    // Permite que o Portal cresça infinitamente conforme o roteiro aumenta
-    const reportHeight = () => {
-        const height = document.documentElement.scrollHeight;
-        window.parent.postMessage({ 
-            action: 'resizeIframe', 
-            height: height + 20 // Margem de respiro
-        }, '*');
-    };
-
-    // Observa mudanças no tamanho do conteúdo (como ao expandir caixas de IA)
-    const resizeObserver = new ResizeObserver(reportHeight);
-    
-    window.addEventListener('DOMContentLoaded', () => {
-        resizeObserver.observe(document.body);
-        
-        // Remove elementos que podem obstruir a visualização dentro do Portal
-        const homeBtn = document.querySelector('.btn-home');
-        if (homeBtn) homeBtn.style.display = 'none'; // Já existe home no Portal
-        
-        reportHeight();
-    });
-
-    // Disparo extra para garantir sincronia após carregamento total
-    window.addEventListener('load', reportHeight);
-</script>
-<!-- ================= FIM DO CÓDIGO CAMALEÃO ================= -->
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Divisor de Texto Inteligente Crônicas Estelares</title>
@@ -137,6 +70,23 @@
             --scrollbar-thumb: #adb5bd;
             --scrollbar-thumb-hover: #007bff;
         }
+
+        /* --- ADIÇÃO CAMALEÃO: CSS DE INTEGRAÇÃO --- */
+        body.is-portal {
+            background-image: none !important;
+            background-color: transparent !important;
+        }
+        body.is-portal::before { display: none !important; }
+        body.is-portal .btn-home { display: none !important; }
+        body.is-portal .container { 
+            box-shadow: none !important; 
+            width: 100% !important; 
+            max-width: 1100px !important; 
+        }
+        /* Oculta scrollbars internas no Portal para usar a do site pai */
+        body.is-portal::-webkit-scrollbar { display: none !important; }
+        body.is-portal { scrollbar-width: none !important; }
+
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -840,6 +790,33 @@
         </div>
     </div>
     <script>
+        // --- SENSORES DE INTEGRAÇÃO NAVE-MÃE (CAMALEÃO) ---
+        const isInsidePortal = window.self !== window.top;
+        if (isInsidePortal) { document.body.classList.add('is-portal'); }
+
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.action === 'setTheme') {
+                if (event.data.theme === 'light') {
+                    document.body.classList.add('light-mode');
+                    const icon = document.querySelector('#theme-toggle i');
+                    if(icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
+                } else {
+                    document.body.classList.remove('light-mode');
+                    const icon = document.querySelector('#theme-toggle i');
+                    if(icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
+                }
+            }
+        });
+
+        const reportHeight = () => {
+            if (isInsidePortal) {
+                window.parent.postMessage({ action: 'resizeIframe', height: document.documentElement.scrollHeight + 50 }, '*');
+            }
+        };
+        new ResizeObserver(reportHeight).observe(document.body);
+        window.addEventListener('load', reportHeight);
+
+        // --- LÓGICA DO COMANDANTE MARCOS INTEGRAL ---
         const inputTextElem = document.getElementById('inputText');
         const descContainer = document.getElementById('descContainer');
         const addDescBtn = document.getElementById('addDescBtn');
@@ -1085,6 +1062,7 @@
             const byteRate = sampleRate * numChannels * bitsPerSample / 8;
             const blockAlign = numChannels * bitsPerSample / 8;
             const wavHeader = new ArrayBuffer(44); const view = new DataView(wavHeader);
+            function writeString(v, o, s) { for (let i = 0; i < s.length; i++) { v.setUint8(o + i, s.charCodeAt(i)); } }
             writeString(view, 0, 'RIFF'); view.setUint32(4, 36 + pcmData.byteLength, true);
             writeString(view, 8, 'WAVE'); writeString(view, 12, 'fmt ');
             view.setUint32(16, 16, true); view.setUint16(20, 1, true); 
