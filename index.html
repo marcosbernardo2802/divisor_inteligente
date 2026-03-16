@@ -74,11 +74,11 @@
                     }
                 });
 
-                // ATAQUE 4: Camuflagem Estelar (Injeção de CSS para Cores e Transparência)
+                // ATAQUE 4: Camuflagem Estelar (Injeção de CSS para Cores e Transparência Expandida)
                 const camaleaoStyle = document.createElement('style');
                 camaleaoStyle.innerHTML = `
                     /* 1. Fundo Transparente para herdar o visual da Nave-Mãe */
-                    html, body, main {
+                    html, body, main, #root, #__next {
                         background: transparent !important;
                         background-color: transparent !important;
                     }
@@ -98,14 +98,18 @@
                         --color-card-border: #d1d9e0 !important;
                     }
 
-                    /* 3. Força elementos Tailwind hardcoded a respeitarem a camuflagem */
-                    .bg-white, .bg-gray-900, .bg-gray-800, .bg-[#0a0f18], .bg-[#101a2d] { 
+                    /* 3. Força elementos Tailwind hardcoded a respeitarem a camuflagem (Modo Varredura Total) */
+                    [class*="bg-gray-"], [class*="bg-slate-"], [class*="bg-zinc-"], [class*="bg-neutral-"], [class*="bg-stone-"], .bg-white, .bg-black, .bg-[#0a0f18], .bg-[#101a2d] { 
                         background-color: var(--color-card-bg) !important; 
                         border-color: var(--color-card-border) !important;
                     }
-                    .text-gray-900, .text-gray-800, .text-white, .text-gray-200 { 
+                    [class*="text-gray-"], [class*="text-slate-"], [class*="text-zinc-"], [class*="text-neutral-"], [class*="text-stone-"], .text-white, .text-black { 
                         color: var(--color-text) !important; 
                     }
+
+                    /* 4. Remove barras de rolagem duplas dentro do iframe */
+                    ::-webkit-scrollbar { display: none; }
+                    * { scrollbar-width: none; }
                 `;
                 document.head.appendChild(camaleaoStyle);
 
