@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divisor de Texto Inteligente Crônicas Estelares</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* --- VARIÁVEIS DE TEMA --- */
+        :root {
+            --bg-color: #0a0a1a;
+            --container-bg: rgba(15, 15, 40, 0.9);
+            --container-border: rgba(70, 70, 150, 0.5);
+            --container-shadow: rgba(0, 191, 255, 0.3);
+            --text-primary: #e0e0ff;
+            --text-secondary: #a0a0ff;
+            --text-tertiary: #b0e0e6;
+            --header-text: #87ceeb;
+            --header-shadow: rgba(135, 206, 235, 0.7);
+            --header-hover-shadow: rgba(135, 206, 235, 0.9);
+            --link-color: #00bfff;
+            --link-hover-color: #87ceeb;
+            --part-bg: rgba(25, 25, 50, 0.8);
+            --part-border: #404060;
+            --part-header-border: #505080;
+            --input-bg: #ffffff;
+            --input-text: #000000;
+            --input-border: #ced4da;
+            --input-focus-border: #007bff;
+            --input-focus-shadow: rgba(0, 123, 255, 0.25);
+            --counter-bg: #e0f2f7;
+            --counter-text: #333333;
+            --btn-delete-bg-start: #dc3545;
+            --btn-delete-bg-end: #ff6347;
+            --btn-delete-hover-bg-start: #c82333;
+            --btn-delete-hover-bg-end: #ff4500;
+            --btn-main-copy-bg-start: #28a745; 
+            --btn-main-copy-bg-end: #32cd32;
+            --ai-glow: 0 0 15px rgba(138, 43, 226, 0.6);
+            --animation-duration-fast: 0.3s;
+            --animation-duration-normal: 0.5s;
+            --scrollbar-bg: rgba(10, 10, 26, 0.5);
+            --scrollbar-thumb: #404060;
+            --scrollbar-thumb-hover: #00bfff;
+        }
+        body.light-mode {
+            --bg-color: #f4f6f8;
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --container-border: #d1d9e6;
+            --container-shadow: rgba(0, 0, 0, 0.1);
+            --text-primary: #333333;
+            --text-secondary: #0056b3;
+            --text-tertiary: #004085;
+            --header-text: #0056b3;
+            --header-shadow: rgba(0, 86, 179, 0.4);
+            --header-hover-shadow: rgba(0, 86, 179, 0.6);
+            --link-color: #007bff;
+            --link-hover-color: #0056b3;
+            --part-bg: #f8f9fa;
+            --part-border: #dee2e6;
+            --part-header-border: #e9ecef;
+            --input-bg: #ffffff;
+            --input-text: #000000;
+            --input-border: #ced4da;
+            --counter-bg: #e9ecef;
+            --counter-text: #333333;
+            --scrollbar-bg: #e9ecef;
+            --scrollbar-thumb: #adb5bd;
+            --scrollbar-thumb-hover: #007bff;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* --- SCROLLBAR CUSTOMIZADA --- */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-bg);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 5px;
+            border: 2px solid var(--scrollbar-bg); /* Cria um pequeno respiro em volta da barra */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-color);
+            background-image: url('https://i.imgur.com/GMiX6Rv.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 26, 0.85);
+            z-index: -1;
+        }
+        .container {
+            position: relative;
+            background-color: var(--container-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 30px var(--container-shadow);
+            max-width: 100%;
+            width: 90%;
+            border: 1px solid var(--container-border);
+            z-index: 1;
+            padding-bottom: 40px;
+        }
+        
+        /* BOTÕES FLUTUANTES */
+        .floating-btn {
+            position: fixed;
+            z-index: 9999;
+            background: var(--part-bg);
+            border: 2px solid var(--link-color);
+            color: var(--link-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 191, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            outline: none;
+        }
+        .btn-home { top: 20px; left: 20px; }
+        .btn-theme { top: 20px; right: 20px; }
+        .floating-btn:hover {
+            transform: scale(1.15) translateY(-3px);
+            background: var(--link-color);
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 191, 255, 0.6);
+            border-color: transparent;
+        }
+        body.light-mode .floating-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: var(--link-color);
+            color: var(--link-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        body.light-mode .floating-btn:hover {
+            background: var(--link-color);
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
+            border-color: transparent;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--header-text);
+            font-size: 1.8em;
+            text-shadow: 0 0 10px var(--header-shadow);
+            margin: 0;
+            margin-bottom: 20px; /* Adicionado para compensar o espaço do link removido */
+        }
+        .app-logo {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 0 25px var(--container-shadow);
+            margin-bottom: 20px;
+        }
+        .horizontal-divider {
+            height: 1px;
+            background-color: var(--container-border);
+            margin: 15px auto;
+            width: 90%;
+        }
+        .form-group { margin-bottom: 15px; }
+        .label-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        label { font-weight: 700; color: var(--text-secondary); font-size: 0.9em; }
+        
+        input[type="text"], input[type="password"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 0.9em;
+            background-color: var(--input-bg);
+            color: var(--input-text);
+            line-height: 1.4;
+            transition: border-color 0.3s;
+        }
+        textarea {
+            resize: vertical;
+            overflow: auto;
+        }
+        /* AJUSTE DO CAMPO PRINCIPAL */
+        #inputText {
+            min-height: 175px;
+            width: 100%;
+            max-width: 100%;
+            display: block;
+            resize: vertical;
+        }
+        /* ESTILO DOS CAMPOS DINÂMICOS */
+        .desc-field-wrapper {
+            position: relative;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.3s ease;
+            transition: opacity 0.3s;
+        }
+        /* Estilo quando desativado */
+        .desc-field-wrapper.disabled {
+            opacity: 0.5;
+        }
+        .desc-field-wrapper.disabled textarea {
+            background-color: rgba(0,0,0,0.2);
+            text-decoration: line-through;
+            color: var(--text-tertiary);
+        }
+        .desc-textarea {
+            min-height: 50px;
+            border: 1px solid #8a2be2;
+            background: rgba(138, 43, 226, 0.05);
+            color: var(--text-primary);
+            padding-right: 95px; /* Espaço extra garantido para os botões */
+        }
+        body.light-mode .desc-textarea { background: #fff; color: #333; }
+        
+        .field-actions {
+            position: absolute;
+            top: 5px;
+            right: 25px; /* Movido para a esquerda para evitar a barra de rolagem */
+            display: flex;
+            gap: 5px;
+            z-index: 2;
+        }
+        .toggle-desc-btn, .remove-desc-btn {
+            border: none;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 0.8em;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .remove-desc-btn {
+            background: var(--btn-delete-bg-start);
+            color: white;
+        }
+        .remove-desc-btn:hover { background: var(--btn-delete-hover-bg-start); }
+        .toggle-desc-btn {
+            background: var(--link-color);
+            color: white;
+        }
+        .toggle-desc-btn:hover { background: var(--link-hover-color); }
+        .toggle-desc-btn.inactive {
+            background: #6c757d; /* Cinza quando inativo */
+        }
+        .add-desc-btn {
+            background: rgba(138, 43, 226, 0.2);
+            color: var(--text-tertiary);
+            border: 1px dashed #8a2be2;
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+        .add-desc-btn:hover { background: rgba(138, 43, 226, 0.3); }
+        .char-counter-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 5px;
+        }
+        .generic-char-counter, .narration-time-main {
+            font-size: 0.8em;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            background-color: var(--counter-bg);
+            color: var(--counter-text);
+            border: 1px solid var(--container-border);
+        }
+        
+        /* FERRAMENTAS PRINCIPAIS UNIFICADAS */
+        .main-buttons { display: flex; gap: 10px; margin-top: 20px; margin-bottom: 15px; flex-wrap: wrap; }
+        .main-buttons button {
+            flex: 1; padding: 8px 10px; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: 700; font-size: 0.85em; color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            min-width: 150px; /* Permite quebrar linha em telas mobile, mas mantem 4 alinhados no PC */
+        }
+        .main-buttons button:hover { transform: translateY(-2px); }
+        .split-btn { background: linear-gradient(45deg, #007bff, #00bfff); }
+        .clear-main-btn { background: linear-gradient(45deg, #dc3545, #ff6347); }
+        .ai-btn { background: linear-gradient(45deg, #6a11cb, #2575fc); }
+        .ai-btn:hover { box-shadow: var(--ai-glow); }
+        .ai-btn:disabled { background: #555; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* ETIQUETA API PARA BOTÕES IA */
+        .api-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            font-size: 0.65em;
+            padding: 2px 5px;
+            border-radius: 4px;
+            margin-left: 4px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        body.light-mode .api-badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            border-color: #ffffff;
+        }
+
+        /* DROPDOWN NAS MAIN BUTTONS (PARA PERSONAGENS) */
+        .main-btn-dropdown {
+            flex: 1;
+            min-width: 150px;
+            position: relative;
+            display: flex;
+        }
+        .main-btn-dropdown > button { width: 100%; }
+        .main-btn-dropdown .dropdown-content { top: 100%; left: 0; right: 0; margin-top: 5px; }
+
+        .settings-panel {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--container-border);
+            margin-bottom: 15px;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        body.light-mode .settings-panel { background: rgba(0,0,0,0.03); }
+        .settings-row { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 25px; }
+        .compact-setting { display: flex; align-items: center; gap: 8px; }
+        .compact-setting label { margin-bottom: 0; white-space: nowrap; font-size: 0.9em; font-weight: 700; color: var(--text-secondary); }
+        .compact-setting select, .compact-setting input[type="number"] { width: auto; padding: 4px 8px; margin: 0; font-size: 0.85em; height: 28px; border-radius: 6px; }
+        .compact-setting input[type="number"] { width: 90px; }
+        
+        .tts-hint {
+            font-size: 0.8em;
+            color: var(--text-tertiary);
+            margin-top: -5px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #apiKeyInput {
+            border-color: #8a2be2; /* Destaca o campo da API */
+        }
+        .get-key-link {
+            color: var(--link-color);
+            font-size: 0.85em;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s, text-shadow 0.2s;
+            font-weight: bold;
+        }
+        .get-key-link:hover {
+            color: var(--link-hover-color);
+            text-shadow: 0 0 5px var(--link-hover-color);
+        }
+        .switch-container { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc; transition: .4s; border-radius: 22px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 16px; width: 16px;
+            left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--link-color); }
+        input:checked + .slider:before { transform: translateX(22px); }
+        
+        .header-actions { display: flex; gap: 8px; }
+        
+        #copyMainTextButton {
+            background: linear-gradient(45deg, #28a745, #32cd32);
+            color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85em; transition: transform 0.2s;
+        }
+        #copyMainTextButton:hover { transform: translateY(-1px); }
+        
+        /* DROPDOWN DE EXPORTAÇÃO E PERSONAGENS */
+        .dropdown-export {
+            position: relative;
+            display: inline-block;
+        }
+        .export-main-btn {
+            background: linear-gradient(45deg, #e74c3c, #f39c12);
+            color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85em; transition: transform 0.2s;
+            height: 100%; display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .export-main-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4); }
+        .dropdown-content {
+            display: none; position: absolute; right: 0; top: 100%; margin-top: 5px;
+            background-color: var(--container-bg); min-width: 150px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5); z-index: 100;
+            border-radius: 6px; overflow: hidden; border: 1px solid var(--container-border);
+        }
+        body.light-mode .dropdown-content { background-color: #fff; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .dropdown-content a {
+            color: var(--text-primary); padding: 10px 15px; text-decoration: none;
+            display: flex; align-items: center; gap: 8px; font-size: 0.9em; transition: background 0.2s;
+        }
+        body.light-mode .dropdown-content a { color: #333; font-weight: bold; }
+        .dropdown-content a:hover { background-color: rgba(135, 206, 235, 0.2); color: var(--link-hover-color); }
+        .dropdown-content.show { display: block; }
+
+        .part-container {
+            background-color: var(--part-bg);
+            border: 1px solid var(--part-border);
+            padding: 15px; margin-top: 15px; border-radius: 8px;
+            animation: fadeInUp 0.5s ease;
+        }
+        .part-header { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center; }
+        .part-header h3 { font-size: 1.1em; margin: 0; }
+        .part-textarea { width: 100%; min-height: 120px; border-radius: 4px; padding: 10px; line-height: 1.4; font-size: 0.85em; resize: vertical; }
+        
+        /* ESTILO DA CAIXA COPIADA UNIVERSAL (AZUL TEMA) */
+        .copied-textarea { background-color: rgba(0, 191, 255, 0.15) !important; border: 1px solid #00bfff !important; box-shadow: 0 0 10px rgba(0, 191, 255, 0.3) !important; transition: all 0.3s ease; }
+        body.light-mode .copied-textarea { background-color: rgba(0, 123, 255, 0.1) !important; border-color: #007bff !important; }
+        
+        .part-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+        .copy-btn { background: linear-gradient(45deg, #28a745, #32cd32); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; transition: all 0.3s; }
+        
+        /* ESTILO DO BOTÃO COPIADO (AZUL TEMA) */
+        .copy-btn.copied-active { background: linear-gradient(45deg, #007bff, #00bfff); color: white; box-shadow: 0 0 10px rgba(0, 191, 255, 0.5); }
+        
+        /* BOTÕES DE AUDIO */
+        .audio-wrapper { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 5px; }
+        
+        /* ESTILIZAÇÃO DO MINI-PLAYER DE ÁUDIO NATIVO */
+        .audio-player { 
+            flex: 1; height: 36px; border-radius: 6px; outline: none;
+            background-color: rgba(10, 10, 26, 0.8);
+            color-scheme: dark; /* Força o painel nativo do navegador para o tema escuro */
+            border: 1px solid var(--part-border);
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+            transition: all 0.3s;
+        }
+        body.light-mode .audio-player {
+            color-scheme: light;
+            background-color: #f0f0f5;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+        }
+        
+        /* Ajustes precisos para navegadores Webkit (Chrome/Edge/Safari) */
+        .audio-player::-webkit-media-controls-enclosure { border-radius: 6px; }
+        .audio-player::-webkit-media-controls-panel { background-color: transparent; }
+        .audio-player::-webkit-media-controls-current-time-display,
+        .audio-player::-webkit-media-controls-time-remaining-display { color: var(--text-primary); }
+
+        .play-btn { background: linear-gradient(45deg, #9b59b6, #8e44ad); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; min-width: 100px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%; }
+        .play-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(155, 89, 182, 0.4); }
+        .play-btn.error-btn { background: #dc3545; }
+        .download-audio-btn { background: linear-gradient(45deg, #e67e22, #d35400); color: white; border: none; padding: 0 12px; border-radius: 4px; cursor: pointer; font-size: 0.9em; height: 36px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .download-audio-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(230, 126, 34, 0.4); }
+        
+        .clear-part-btn { background: linear-gradient(45deg, #dc3545, #ff6347); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; }
+        #message {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            padding: 10px 20px; border-radius: 8px; z-index: 1000;
+            display: none; color: white; font-weight: bold; font-size: 0.9em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .success { background: #28a745; }
+        .error { background: #dc3545; }
+        .ai-msg { background: #6a11cb; }
+        .ai-output-box {
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 8px; padding: 15px; margin-top: 15px;
+            display: none; animation: fadeInUp 0.5s ease;
+        }
+        .ai-output-box h4 { margin-top: 0; color: #b19cd9; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* CORREÇÃO DO MODO CLARO PARA O TEXTO DA IA E ESTILO TEXTAREA */
+        .ai-output-content { 
+            font-size: 0.85em; 
+            color: #e0e0ff; 
+            white-space: pre-wrap; 
+            line-height: 1.6;
+            width: 100%;
+            min-height: 250px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 6px;
+            padding: 12px;
+            box-sizing: border-box;
+            resize: vertical;
+            outline: none;
+            font-family: inherit;
+            margin-top: 10px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .ai-output-content:focus {
+            border-color: #8a2be2;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.2);
+        }
+        
+        /* Ajustes específicos para Modo Claro na caixa de IA */
+        body.light-mode .ai-output-box {
+            background-color: #ffffff;
+            border-color: #6a11cb;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        body.light-mode .ai-output-content { 
+            color: #000000; 
+            background: #f8f9fa;
+            border-color: #ced4da;
+        }
+        body.light-mode .ai-output-content:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 10px rgba(106, 17, 203, 0.2);
+        }
+        body.light-mode .ai-output-box h4 { color: #6a11cb; }
+        
+        .copy-ai-btn {
+            background: var(--link-color); border: none; color: white;
+            padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8em;
+        }
+        .clear-ai-btn {
+            background: var(--btn-delete-bg-start);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background 0.2s;
+        }
+        .clear-ai-btn:hover { background: var(--btn-delete-hover-bg-start); }
+        /* RODAPÉ CENTRALIZADO E BAIXO */
+        .footer-text {
+            text-align: center; margin-top: 50px; padding-top: 25px;
+            border-top: 1px solid var(--container-border);
+            font-size: 0.85em; color: var(--text-tertiary);
+            line-height: 1.8; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .footer-text p { margin: 5px 0; width: 100%; }
+
+        /* MODAL DE CONFIRMAÇÃO */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: var(--container-bg); border: 1px solid var(--container-border);
+            padding: 25px; border-radius: 12px; box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            text-align: center; max-width: 400px; width: 90%; animation: fadeInUp 0.3s ease;
+        }
+        .modal-content h3 { color: var(--text-primary); margin-top: 0; margin-bottom: 20px; font-size: 1.2em; }
+        body.light-mode .modal-content { background: #fff; border-color: #ccc; box-shadow: 0 0 30px rgba(0,0,0,0.2); }
+        body.light-mode .modal-content h3 { color: #333; }
+        .modal-buttons { display: flex; justify-content: center; gap: 15px; }
+        .btn-yes, .btn-no { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: opacity 0.2s; }
+        .btn-yes { background: linear-gradient(45deg, #dc3545, #ff6347); color: white; }
+        .btn-no { background: #6c757d; color: white; }
+        .btn-yes:hover, .btn-no:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <!-- MODAL DE CONFIRMAÇÃO -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="confirmMessage">Tem certeza?</h3>
+            <div class="modal-buttons">
+                <button id="confirmYes" class="btn-yes"><i class="fas fa-check"></i> Sim, apagar</button>
+                <button id="confirmNo" class="btn-no"><i class="fas fa-times"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="message"></div>
+    
+    <!-- BOTÕES FLUTUANTES (HOME E TEMA) -->
+    <a href="https://cronicasestelares.vercel.app/" class="floating-btn btn-home" title="Voltar para a Central de Ferramentas do Comandante Marcos">
+        <i class="fas fa-home"></i>
+    </a>
+    <button id="theme-toggle" class="floating-btn btn-theme" title="Alternar entre Modo Claro e Escuro">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+        <a href="https://www.youtube.com/@CronicasEstelaress" target="_blank" style="text-decoration:none" title="Ir para o Canal Crônicas Estelares no YouTube">
+            <h1>Divisor de Texto Inteligente Crônicas Estelares</h1>
+        </a>
+        <img src="https://i.imgur.com/GMiX6Rv.png" alt="Banner Crônicas Estelares" class="app-logo" title="Crônicas Estelares: Onde cada sombra do espaço esconde uma história">
+        
+        <!-- CAMPO DE CHAVE API (NOVO LOCAL COM LINK) -->
+        <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <label for="apiKeyInput" style="font-size:0.9em; color:#b19cd9; margin-bottom: 0;"><i class="fas fa-key"></i> Chave de API Gemini (Necessária para IA):</label>
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" class="get-key-link" title="Clique para gerar sua chave de API gratuita no Google AI Studio">
+                    <i class="fas fa-external-link-alt"></i> Obter Chave Grátis
+                </a>
+            </div>
+            <input type="password" id="apiKeyInput" placeholder="Cole a sua Chave de API do Google Gemini aqui para ativar a IA..." title="Insira a sua chave API para utilizar as funções inteligentes e a locução">
+        </div>
+        
+        <!-- CAMPO DE INSTRUÇÕES -->
+        <div class="form-group">
+            <label>Instruções Opcionais (Serão repetidas em cada bloco):</label>
+            <div id="descContainer"></div>
+            <button id="addDescBtn" class="add-desc-btn" title="Adicionar um novo campo de instrução de voz ou contexto"><i class="fas fa-plus"></i> Adicionar Campo de Instrução</button>
+        </div>
+        <div class="form-group">
+            <div class="label-wrapper">
+                <label for="inputText">Roteiro Principal:</label>
+                <div class="header-actions">
+                    <div class="dropdown-export">
+                        <button class="export-main-btn" id="exportMainBtn"><i class="fas fa-download"></i> Baixar <i class="fas fa-caret-down"></i></button>
+                        <div class="dropdown-content">
+                            <a href="#" id="downloadPdfOpt" title="Baixar roteiro em PDF"><i class="fas fa-file-pdf" style="color: #e74c3c;"></i> Formato PDF</a>
+                            <a href="#" id="downloadTxtOpt" title="Baixar roteiro em TXT"><i class="fas fa-file-alt" style="color: #f39c12;"></i> Formato TXT</a>
+                        </div>
+                    </div>
+                    <button id="copyMainTextButton" title="Copiar todo o roteiro original para a área de transferência"><i class="fas fa-paste"></i> Copiar Tudo</button>
+                </div>
+            </div>
+            <textarea id="inputText" placeholder="Insira o seu roteiro para processamento galáctico..." title="Cole aqui o texto completo que será dividido"></textarea>
+            <div class="char-counter-wrapper">
+                <span class="narration-time-main"><i class="fas fa-clock"></i> <span id="mainNarrationTimeText">0 seg</span></span>
+                <span class="generic-char-counter">Caracteres: <span id="currentTextLength">0</span></span>
+            </div>
+        </div>
+
+        <div class="settings-panel">
+            <div class="settings-row">
+                <div class="compact-setting" title="Escolha a voz para a prévia de áudio">
+                    <label for="voiceSelect"><i class="fas fa-microphone-alt"></i> Voz:</label>
+                    <select id="voiceSelect" title="Selecione a voz para o TTS do Gemini">
+                        <option value="Kore" title="Feminina: Calma, versátil e natural">Kore</option>
+                        <option value="Zephyr" title="Feminina: Suave, relaxada e empática">Zephyr</option>
+                        <option value="Puck" title="Masculina: Jovial, enérgica e rápida">Puck</option>
+                        <option value="Charon" title="Masculina: Grave, profunda e narrativa">Charon</option>
+                        <option value="Fenrir" title="Masculina: Profunda, intensa e forte (Estilo locutor)">Fenrir</option>
+                        <option value="Leda" title="Feminina: Equilibrada, profissional e direta">Leda</option>
+                        <option value="Orus" title="Masculina: Confiante, firme e autoritária">Orus</option>
+                        <option value="Aoede" title="Feminina: Expressiva, dinâmica e clara">Aoede</option>
+                        <option value="Callirrhoe" title="Feminina: Aguda, jovial e energética">Callirrhoe</option>
+                        <option value="Autonoe" title="Feminina: Suave, sussurrada e íntima">Autonoe</option>
+                        <option value="Enceladus" title="Masculina: Neutra, jornalística e informativa">Enceladus</option>
+                        <option value="Iapetus" title="Masculina: Grave, séria e ponderada">Iapetus</option>
+                        <option value="Umbriel" title="Masculina: Suave, calma e tranquila">Umbriel</option>
+                        <option value="Algieba" title="Feminina: Formal, acadêmica e precisa">Algieba</option>
+                        <option value="Despina" title="Feminina: Amigável, calorosa e convidativa">Despina</option>
+                        <option value="Erinome" title="Feminina: Narrativa, fluida e contadora de histórias">Erinome</option>
+                        <option value="Algenib" title="Masculina: Rápida, urgente e informativa">Algenib</option>
+                        <option value="Rasalgethi" title="Masculina: Rouca, texturizada e madura">Rasalgethi</option>
+                        <option value="Laomedeia" title="Feminina: Aguda, leve e delicada">Laomedeia</option>
+                        <option value="Achernar" title="Masculina: Padrão, equilibrada e versátil">Achernar</option>
+                        <option value="Alnilam" title="Masculina: Suave, baixa e relaxante">Alnilam</option>
+                        <option value="Schedar" title="Masculina: Forte, projetada e assertiva">Schedar</option>
+                        <option value="Gacrux" title="Masculina: Grave, autoritária e dominante">Gacrux</option>
+                        <option value="Pulcherrima" title="Feminina: Suave, melódica e agradável">Pulcherrima</option>
+                        <option value="Achird" title="Masculina: Neutra, clara e objetiva">Achird</option>
+                        <option value="Zubenelgenubi" title="Masculina: Profunda, ressonante e marcante">Zubenelgenubi</option>
+                        <option value="Vindemiatrix" title="Feminina: Clara, alta e nítida">Vindemiatrix</option>
+                        <option value="Sadachbia" title="Feminina: Neutra, calma e informativa">Sadachbia</option>
+                        <option value="Sadaltager" title="Feminina: Calma, lenta e reflexiva">Sadaltager</option>
+                        <option value="Sulafat" title="Feminina: Rápida, enérgica e animada">Sulafat</option>
+                    </select>
+                </div>
+                
+                <div class="compact-setting" title="Define o tamanho máximo de cada bloco de texto">
+                    <label for="charLimit"><i class="fas fa-text-width"></i> Máx. Carac.:</label>
+                    <input type="number" id="charLimit" value="2000">
+                </div>
+                
+                <label class="switch-container" title="Ativar/Desativar quebra de linha inteligente após pontuação">
+                    <span style="font-weight:700; color:var(--text-secondary); font-size:0.9em"><i class="fas fa-paragraph"></i> Quebrar linhas?</span>
+                    <div class="switch">
+                        <input type="checkbox" id="formatToggle" checked>
+                        <span class="slider"></span>
+                    </div>
+                </label>
+            </div>
+            
+            <div class="settings-row" style="margin-top: 10px;">
+                <div class="form-group" style="width: 100%; margin-bottom: 0;">
+                    <label for="standardTagsInput"><i class="fas fa-tags"></i> Suas Tags Padrão (Salvas automaticamente):</label>
+                    <div id="tagsWrapper" class="desc-field-wrapper" style="margin-top: 5px;">
+                        <textarea id="standardTagsInput" class="desc-textarea" placeholder="Ex: ficção, audio livro, mistério, nome do seu canal..." title="Estas tags serão adicionadas ao final de toda geração de SEO e ficarão guardadas no seu navegador."></textarea>
+                        <div class="field-actions" style="top: 10px;">
+                            <button id="toggleTagsBtn" class="toggle-desc-btn" title="Ativar/Desativar tags padrão"><i class="fas fa-eye"></i></button>
+                            <button id="clearTagsBtn" class="remove-desc-btn" title="Apagar todas as tags padrão"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tts-hint" style="margin-top: 15px;">
+                <i class="fas fa-info-circle"></i> Dica: Para locuções geradas pela IA do Gemini, é aconselhável usar no máximo 2.000 caracteres por bloco.
+            </div>
+            <div class="tts-hint" style="margin-top: 8px;">
+                <i class="fab fa-edge"></i> Aviso: Prévias de áudio sem API funcionam muito melhor no navegador Microsoft Edge, por ter vozes nativas de maior qualidade.
+            </div>
+        </div>
+
+        <!-- BOTÕES UNIFICADOS EM UMA LINHA -->
+        <div class="main-buttons">
+            <button id="splitButton" class="split-btn" title="Formatar e dividir o texto em blocos menores"><i class="fas fa-scissors"></i> Processar e Dividir</button>
+            
+            <div class="main-btn-dropdown">
+                <button id="aiRefineMainBtn" class="ai-btn" title="Extrair características dos personagens para roteiro ou imagem"><i class="fas fa-user-astronaut"></i> ✨ Personagens <span class="api-badge">API</span> <i class="fas fa-caret-down" style="margin-left:5px"></i></button>
+                <div class="dropdown-content">
+                    <a href="#" id="aiRefineBasicOpt" title="Descrição básica do personagem"><i class="fas fa-list"></i> Modo Básico</a>
+                    <a href="#" id="aiRefineImageOpt" title="Prompt hiper-detalhado para Midjourney ou DALL-E"><i class="fas fa-image"></i> Prompt Imagem</a>
+                </div>
+            </div>
+            
+            <button id="aiMetadataBtn" class="ai-btn" title="A IA gera 10 Títulos, Descrição Abrangente, Tags Limpas e Comentário Fixado"><i class="fas fa-rocket"></i> ✨ Metadados SEO <span class="api-badge">API</span></button>
+            <button id="clearMainTextButton" class="clear-main-btn" title="Apagar todos os campos e recomeçar"><i class="fas fa-trash-alt"></i> Limpar Tudo</button>
+        </div>
+
+        <div id="aiOutput" class="ai-output-box">
+            <h4>
+                <span><i class="fas fa-stars"></i> IA Gerador</span>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button id="copyAiOutput" class="copy-ai-btn" title="Copiar conteúdo gerado pela IA"><i class="fas fa-copy"></i> Copiar</button>
+                    <button id="clearAiOutput" class="clear-ai-btn" title="Fechar painel de IA"><i class="fas fa-times"></i></button>
+                </div>
+            </h4>
+            <textarea id="aiOutputContent" class="ai-output-content" spellcheck="false" title="Você pode editar este texto livremente antes de copiar"></textarea>
+        </div>
+
+        <div id="output"></div>
+        
+        <div class="footer-text">
+            <p><span>✨</span> Ferramenta gratuita desenvolvida para criadores de canais dark. <span>🌠</span></p>
+        </div>
+    </div>
+    <script>
+        const inputTextElem = document.getElementById('inputText');
+        const descContainer = document.getElementById('descContainer');
+        const addDescBtn = document.getElementById('addDescBtn');
+        const charLimitElem = document.getElementById('charLimit');
+        const formatToggle = document.getElementById('formatToggle');
+        const splitButton = document.getElementById('splitButton');
+        const clearMainTextButton = document.getElementById('clearMainTextButton');
+        const outputDiv = document.getElementById('output');
+        const currentTextLengthSpan = document.getElementById('currentTextLength');
+        const mainNarrationTimeTextSpan = document.getElementById('mainNarrationTimeText');
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const copyMainTextButton = document.getElementById('copyMainTextButton');
+        const aiMetadataBtn = document.getElementById('aiMetadataBtn');
+        const aiOutput = document.getElementById('aiOutput');
+        const aiOutputContent = document.getElementById('aiOutputContent');
+        const copyAiOutput = document.getElementById('copyAiOutput');
+        const clearAiOutput = document.getElementById('clearAiOutput');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const exportMainBtn = document.getElementById('exportMainBtn');
+        const downloadPdfOpt = document.getElementById('downloadPdfOpt');
+        const downloadTxtOpt = document.getElementById('downloadTxtOpt');
+        const standardTagsInput = document.getElementById('standardTagsInput');
+        const tagsWrapper = document.getElementById('tagsWrapper');
+        const toggleTagsBtn = document.getElementById('toggleTagsBtn');
+        const clearTagsBtn = document.getElementById('clearTagsBtn');
+        const aiRefineMainBtn = document.getElementById('aiRefineMainBtn');
+        const aiRefineBasicOpt = document.getElementById('aiRefineBasicOpt');
+        const aiRefineImageOpt = document.getElementById('aiRefineImageOpt');
+        
+        // --- LÓGICA DOS DROPDOWNS AO CLICAR ---
+        exportMainBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            document.querySelectorAll(".dropdown-content").forEach(d => { if(d !== exportMainBtn.nextElementSibling) d.classList.remove('show'); });
+            exportMainBtn.nextElementSibling.classList.toggle('show');
+        });
+
+        aiRefineMainBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            document.querySelectorAll(".dropdown-content").forEach(d => { if(d !== aiRefineMainBtn.nextElementSibling) d.classList.remove('show'); });
+            aiRefineMainBtn.nextElementSibling.classList.toggle('show');
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('.export-main-btn') && !e.target.closest('#aiRefineMainBtn')) {
+                document.querySelectorAll(".dropdown-content").forEach(d => d.classList.remove('show'));
+            }
+        });
+
+        // --- LÓGICA DO MODAL DE CONFIRMAÇÃO ---
+        let currentConfirmCallback = null;
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmYes = document.getElementById('confirmYes');
+        const confirmNo = document.getElementById('confirmNo');
+
+        function showConfirm(message, callback) {
+            document.getElementById('confirmMessage').innerText = message;
+            currentConfirmCallback = callback;
+            confirmModal.classList.add('active');
+        }
+
+        function closeConfirm() {
+            confirmModal.classList.remove('active');
+            currentConfirmCallback = null;
+        }
+
+        confirmYes.onclick = () => {
+            if (currentConfirmCallback) currentConfirmCallback();
+            closeConfirm();
+        };
+        confirmNo.onclick = closeConfirm;
+        
+        // Função de cópia universal
+        function copyToClipboard(text) {
+            const temp = document.createElement('textarea');
+            temp.value = text; temp.style.position = 'fixed'; temp.style.left = '-9999px';
+            document.body.appendChild(temp);
+            temp.focus(); temp.select();
+            let success = false;
+            try { success = document.execCommand('copy'); } catch (e) { console.error(e); }
+            document.body.removeChild(temp);
+            return success;
+        }
+        
+        // Variáveis globais para áudio
+        let activeAudioWrapper = null;
+        let activePlayBtn = null;
+        let currentAudio = null;
+        
+        // --- SISTEMA DE ÁUDIO DUPLO (GEMINI TTS + FALLBACK NAVEGADOR) ---
+        async function toggleSpeech(text, btnWrapper, idx) {
+            const btn = btnWrapper.querySelector('.play-btn');
+            
+            if (btn.textContent.includes('Carregando')) return;
+            
+            if (window.speechSynthesis && window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                if (btn.innerHTML.includes('Parar')) {
+                    btn.innerHTML = '<i class="fas fa-play"></i> Ouvir';
+                    return;
+                }
+            }
+            
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
+            activePlayBtn = btn;
+            
+            const key = apiKeyInput.value.trim();
+            const selectedVoice = voiceSelect.value;
+            
+            try {
+                await createGeminiPlayer(text, key, btnWrapper, selectedVoice, idx);
+                return;
+            } catch (e) {
+                console.error("Falha na API Gemini TTS, ativando Fallback nativo:", e);
+                btn.classList.add('error-btn');
+                btn.innerHTML = '<i class="fas fa-robot"></i> Voz Nativa...';
+                
+                playBrowserTTS(text, btn);
+                
+                setTimeout(() => { 
+                    btn.classList.remove('error-btn');
+                    if (window.speechSynthesis.speaking) {
+                        btn.innerHTML = '<i class="fas fa-stop"></i> Parar';
+                    } else {
+                        btn.innerHTML = '<i class="fas fa-play"></i> Ouvir (Fallback)';
+                    }
+                }, 1500);
+                return;
+            }
+        }
+        
+        // 1. Google Gemini TTS -> Cria Player
+        async function createGeminiPlayer(text, key, wrapper, voice, idx) {
+            const apiKey = key || "";
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+            const prompt = `Aja como um narrador profissional. O texto abaixo contém instruções de estilo/voz no início, seguidas pelo roteiro. Siga as instruções de tom/emoção, mas NÃO as leia em voz alta. Apenas narre o roteiro final.\n\nTexto:\n${text}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+            
+            let response;
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i <= delays.length; i++) {
+                try {
+                    response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) break;
+                } catch (err) {
+                    if (i === delays.length) throw err;
+                }
+                if (!response || !response.ok) {
+                    if (i === delays.length) throw new Error(`API Error: ${response ? response.status : 'Network'}`);
+                    await new Promise(r => setTimeout(r, delays[i]));
+                }
+            }
+            
+            const data = await response.json();
+            const base64Audio = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+            
+            if (!base64Audio) throw new Error("No audio data");
+            
+            const pcmData = base64ToArrayBuffer(base64Audio);
+            const wavData = pcmToWav(pcmData);
+            const audioBlob = new Blob([wavData], { type: 'audio/wav' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            
+            wrapper.innerHTML = `
+                <audio controls class="audio-player" autoplay style="flex: 1;">
+                    <source src="${audioUrl}" type="audio/wav">
+                    Seu navegador não suporta áudio.
+                </audio>
+                <button class="download-audio-btn" title="Baixar Áudio"><i class="fas fa-download"></i></button>
+            `;
+            
+            const audioEl = wrapper.querySelector('audio');
+            currentAudio = audioEl;
+            
+            const dlBtn = wrapper.querySelector('.download-audio-btn');
+            dlBtn.onclick = () => {
+                const a = document.createElement('a');
+                a.href = audioUrl;
+                a.download = `cronicas_estelares_part_${idx}.wav`;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            };
+        }
+        
+        // 2. Browser TTS (Fallback)
+        function playBrowserTTS(text, btn) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'pt-BR';
+            
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                const ptVoices = voices.filter(v => v.lang.toLowerCase().includes('pt-br') || v.lang.toLowerCase().includes('pt_br'));
+                let bestVoice = ptVoices.find(v => v.name.toLowerCase().includes('natural'));
+                if (!bestVoice) bestVoice = ptVoices.find(v => v.name.toLowerCase().includes('microsoft'));
+                if (!bestVoice) bestVoice = ptVoices.find(v => v.name.toLowerCase().includes('google'));
+                if (!bestVoice && ptVoices.length > 0) bestVoice = ptVoices[0];
+                
+                if (bestVoice) {
+                    utterance.voice = bestVoice;
+                }
+            }
+            
+            utterance.onstart = () => { btn.innerHTML = '<i class="fas fa-stop"></i> Parar'; activePlayBtn = btn; };
+            utterance.onend = () => { btn.innerHTML = '<i class="fas fa-play"></i> Ouvir (Fallback)'; activePlayBtn = null; };
+            utterance.onerror = (e) => { 
+                console.error("Erro no motor de voz nativo do navegador:", e);
+                btn.innerHTML = '<i class="fas fa-play"></i> Ouvir (Fallback)'; 
+                activePlayBtn = null; 
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        // Utilitários de Áudio
+        function base64ToArrayBuffer(base64) {
+            const binaryString = window.atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) { bytes[i] = binaryString.charCodeAt(i); }
+            return bytes.buffer;
+        }
+        
+        function pcmToWav(pcmData) {
+            const numChannels = 1; const sampleRate = 24000; const bitsPerSample = 16;
+            const byteRate = sampleRate * numChannels * bitsPerSample / 8;
+            const blockAlign = numChannels * bitsPerSample / 8;
+            const wavHeader = new ArrayBuffer(44); const view = new DataView(wavHeader);
+            writeString(view, 0, 'RIFF'); view.setUint32(4, 36 + pcmData.byteLength, true);
+            writeString(view, 8, 'WAVE'); writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true); view.setUint16(20, 1, true); 
+            view.setUint16(22, numChannels, true); view.setUint32(24, sampleRate, true);
+            view.setUint32(28, byteRate, true); view.setUint16(32, blockAlign, true);
+            view.setUint16(34, bitsPerSample, true); writeString(view, 36, 'data');
+            view.setUint32(40, pcmData.byteLength, true);
+            const tmp = new Uint8Array(wavHeader.byteLength + pcmData.byteLength);
+            tmp.set(new Uint8Array(wavHeader), 0); tmp.set(new Uint8Array(pcmData), wavHeader.byteLength);
+            return tmp.buffer;
+        }
+        
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) { view.setUint8(offset + i, string.charCodeAt(i)); }
+        }
+        
+        // --- LÓGICA DE IA GEMINI TEXTO ---
+        async function callGemini(prompt, systemInstruction = "") {
+            const apiKey = apiKeyInput.value.trim() || "";
+            // Alterna o modelo: usa o público se o usuário colocou a chave, e o preview restrito no ambiente de testes
+            const modelName = apiKey ? "gemini-2.5-flash" : "gemini-2.5-flash-preview-09-2025";
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+            const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemInstruction }] } };
+            
+            let response;
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i <= delays.length; i++) {
+                try {
+                    response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (response.ok) break;
+                } catch (err) {
+                    if (i === delays.length) throw err;
+                }
+                if (!response || !response.ok) {
+                    if (i === delays.length) throw new Error('Falha API');
+                    await new Promise(r => setTimeout(r, delays[i]));
+                }
+            }
+            
+            const data = await response.json();
+            return data.candidates?.[0]?.content?.parts?.[0]?.text;
+        }
+        
+        // --- FUNÇÃO CENTRAL PARA ANÁLISE DE PERSONAGENS (BÁSICO OU IMAGEM) ---
+        async function processCharacterAnalysis(mode) {
+            const text = inputTextElem.value.trim();
+            if (!text) return showMsg("Sem roteiro!", "error");
+            
+            document.querySelectorAll(".dropdown-content").forEach(d => d.classList.remove('show'));
+            aiRefineMainBtn.disabled = true; 
+            aiRefineMainBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analisando...';
+            
+            try {
+                let sysPrompt = "";
+                if (mode === 'basic') {
+                    sysPrompt = "Você é um assistente de roteiro profissional. Analise o texto fornecido e extraia uma lista dos personagens principais. Para cada personagem, escreva uma descrição fluida e natural (sem usar tabelas ou marcadores), seguindo estritamente este formato: 'Nome do Personagem, [Espécie] ([Se for espécie alienígena/fantástica, dê uma breve descrição biológica/visual. Se for humano, apenas ignore a descrição biológica e use algo como Mulher/Homem humano]), [Profissão/Papel] de [Idade] anos, olhos [cor], [características físicas e personalidade], vestindo [roupas].' Foque em Nome, Espécie, Papel/Profissão, Idade, Características Físicas e Roupas.";
+                } else if (mode === 'image') {
+                    sysPrompt = "Você é um assistente de roteiro e especialista em criação de prompts para IAs geradoras de imagem (Midjourney, DALL-E, etc.). Analise o texto e extraia os personagens principais. Para cada personagem, crie um prompt visual extremamente detalhado. Siga rigorosamente este formato: 'Nome: [Nome do Personagem] | Prompt: Retrato cinematográfico, [Espécie/Gênero], [Idade] anos, [Profissão/Papel], [descrição hiper-detalhada do formato do rosto, cabelos, cor dos olhos, pele, marcas/cicatrizes], vestindo [descrição minuciosa das roupas, armaduras, texturas, cores e acessórios], [expressão facial e postura], iluminação dramática, cenário de fundo [contexto do personagem no roteiro], 8k, hiper-realista, masterpiece, altamente detalhado.' O prompt deve ser um parágrafo único por personagem, focado estritamente em elementos visuais descritivos e em português.";
+                }
+
+                const res = await callGemini(text, sysPrompt);
+                if (res) { 
+                    aiOutput.style.display = 'block'; 
+                    aiOutputContent.value = res; 
+                    showMsg("Concluído!", "success"); 
+                    aiOutput.scrollIntoView({ behavior: 'smooth' }); 
+                }
+            } catch (e) { 
+                showMsg("Erro na análise.", "error"); 
+            } finally { 
+                aiRefineMainBtn.disabled = false; 
+                aiRefineMainBtn.innerHTML = '<i class="fas fa-user-astronaut"></i> ✨ Personagens <span class="api-badge">API</span> <i class="fas fa-caret-down" style="margin-left:5px"></i>'; 
+            }
+        }
+
+        aiRefineBasicOpt.addEventListener('click', (e) => { e.preventDefault(); processCharacterAnalysis('basic'); });
+        aiRefineImageOpt.addEventListener('click', (e) => { e.preventDefault(); processCharacterAnalysis('image'); });
+        
+        aiMetadataBtn.addEventListener('click', async () => {
+            const text = inputTextElem.value.trim();
+            if (!text) return showMsg("Sem texto!", "error");
+            aiMetadataBtn.disabled = true; aiMetadataBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando...';
+            
+            const isTagsActive = !tagsWrapper.classList.contains('disabled');
+            const userTags = isTagsActive ? standardTagsInput.value.trim() : "";
+            const tagsInstruction = userTags ? ` e adicione ao final as seguintes tags padrão fornecidas pelo utilizador: ${userTags}` : "";
+            
+            const sys = `Gere 10 sugestões de Títulos 'Clickbait Ético' altamente atrativos (um por linha, pulando uma linha entre eles). Escreva uma Descrição MUITO COMPLETA E DETALHADA para o YouTube. A descrição deve conter: 1. Um parágrafo inicial super envolvente como gancho. 2. Um resumo rico em detalhes da trama/assunto do roteiro sem dar grandes spoilers. 3. Uma seção "Neste vídeo:" com 3 a 5 tópicos (bullet points) sobre o que o espectador vai encontrar. Gere uma lista de 15 tags relacionadas ao roteiro${tagsInstruction}. As tags devem ser separadas apenas por vírgula (sem números). Por fim, crie uma sugestão de Comentário Fixado.`;
+            try {
+                const res = await callGemini(text, sys);
+                if (res) { aiOutput.style.display = 'block'; aiOutputContent.value = res; showMsg("SEO pronto!", "success"); aiOutput.scrollIntoView({ behavior: 'smooth' }); }
+            } catch (e) { console.error(e); }
+            finally { aiMetadataBtn.disabled = false; aiMetadataBtn.innerHTML = '<i class="fas fa-rocket"></i> ✨ Metadados SEO <span class="api-badge">API</span>'; }
+        });
+        
+        copyAiOutput.onclick = () => { 
+            document.querySelectorAll('.copied-textarea').forEach(ta => ta.classList.remove('copied-textarea'));
+            aiOutputContent.focus(); 
+            aiOutputContent.select();
+            aiOutputContent.classList.add('copied-textarea');
+            if (copyToClipboard(aiOutputContent.value)) { 
+                copyAiOutput.innerText = "Copiado!"; 
+                setTimeout(() => copyAiOutput.innerText = "Copiar", 2000); 
+            } 
+        };
+        
+        clearAiOutput.onclick = () => { aiOutput.style.display = 'none'; aiOutputContent.value = ''; };
+        
+        // Interface Dinâmica
+        function createDescField(val = "", active = true) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `desc-field-wrapper ${active ? '' : 'disabled'}`;
+            const textarea = document.createElement('textarea');
+            textarea.className = 'desc-textarea';
+            textarea.placeholder = "Instrução de Voz, Personagem ou Atmosfera...";
+            textarea.value = val;
+            textarea.addEventListener('input', updateStats);
+            const actions = document.createElement('div'); actions.className = 'field-actions';
+            const toggleBtn = document.createElement('button');
+            toggleBtn.className = `toggle-desc-btn ${active ? '' : 'inactive'}`;
+            toggleBtn.innerHTML = active ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            toggleBtn.title = "Ativar/Desativar instrução";
+            toggleBtn.onclick = () => {
+                const isActive = !wrapper.classList.contains('disabled');
+                if (isActive) { wrapper.classList.add('disabled'); toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i>'; toggleBtn.classList.add('inactive'); }
+                else { wrapper.classList.remove('disabled'); toggleBtn.innerHTML = '<i class="fas fa-eye"></i>'; toggleBtn.classList.remove('inactive'); }
+                updateStats();
+            };
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-desc-btn'; removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            removeBtn.onclick = () => { 
+                showConfirm("Tem certeza que deseja apagar esta instrução?", () => {
+                    wrapper.remove(); updateStats(); 
+                });
+            };
+            actions.appendChild(toggleBtn); actions.appendChild(removeBtn);
+            wrapper.appendChild(textarea); wrapper.appendChild(actions);
+            descContainer.appendChild(wrapper);
+            return textarea;
+        }
+        
+        addDescBtn.onclick = () => { createDescField().focus(); updateStats(); };
+        
+        toggleTagsBtn.onclick = () => {
+            const isActive = !tagsWrapper.classList.contains('disabled');
+            if (isActive) {
+                tagsWrapper.classList.add('disabled');
+                toggleTagsBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                toggleTagsBtn.classList.add('inactive');
+            } else {
+                tagsWrapper.classList.remove('disabled');
+                toggleTagsBtn.innerHTML = '<i class="fas fa-eye"></i>';
+                toggleTagsBtn.classList.remove('inactive');
+            }
+            updateStats();
+        };
+
+        clearTagsBtn.onclick = () => {
+            showConfirm("Tem certeza que deseja apagar todas as suas tags padrão?", () => {
+                standardTagsInput.value = '';
+                updateStats();
+            });
+        };
+        
+        themeToggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const icon = themeToggleButton.querySelector('i');
+            icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun');
+        });
+        
+        function formatTime(len) { const sec = Math.round((len / 1000) * 60); return sec < 60 ? `${sec} seg` : `${Math.floor(sec/60)} min ${sec%60} seg`; }
+        
+        function updateStats() {
+            const val = inputTextElem.value;
+            currentTextLengthSpan.textContent = val.length; mainNarrationTimeTextSpan.textContent = formatTime(val.length);
+            const descs = Array.from(descContainer.querySelectorAll('.desc-field-wrapper')).map(wrapper => ({
+                text: wrapper.querySelector('.desc-textarea').value,
+                active: !wrapper.classList.contains('disabled')
+            }));
+            localStorage.setItem('cronicas_v19_text', val);
+            localStorage.setItem('cronicas_v19_descs', JSON.stringify(descs));
+            localStorage.setItem('cronicas_v19_limit', charLimitElem.value);
+            localStorage.setItem('cronicas_v19_key', apiKeyInput.value);
+            localStorage.setItem('cronicas_v19_voice', voiceSelect.value);
+            localStorage.setItem('cronicas_v19_usertags', standardTagsInput.value);
+            localStorage.setItem('cronicas_v19_usertags_active', !tagsWrapper.classList.contains('disabled'));
+        }
+        
+        inputTextElem.oninput = updateStats; charLimitElem.oninput = updateStats; formatToggle.onchange = updateStats; apiKeyInput.oninput = updateStats; voiceSelect.onchange = updateStats; standardTagsInput.oninput = updateStats;
+        
+        window.onload = () => {
+            // Pré-carrega as vozes do navegador para o fallback
+            window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+            
+            if (localStorage.getItem('cronicas_v19_text')) inputTextElem.value = localStorage.getItem('cronicas_v19_text');
+            if (localStorage.getItem('cronicas_v19_limit')) charLimitElem.value = localStorage.getItem('cronicas_v19_limit');
+            if (localStorage.getItem('cronicas_v19_key')) apiKeyInput.value = localStorage.getItem('cronicas_v19_key');
+            if (localStorage.getItem('cronicas_v19_voice')) voiceSelect.value = localStorage.getItem('cronicas_v19_voice');
+            if (localStorage.getItem('cronicas_v19_usertags')) standardTagsInput.value = localStorage.getItem('cronicas_v19_usertags');
+            
+            const tagsActive = localStorage.getItem('cronicas_v19_usertags_active');
+            if (tagsActive === 'false') {
+                tagsWrapper.classList.add('disabled');
+                toggleTagsBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                toggleTagsBtn.classList.add('inactive');
+            }
+            
+            const savedDescs = localStorage.getItem('cronicas_v19_descs');
+            if (savedDescs) {
+                try {
+                    const parsed = JSON.parse(savedDescs);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        if (typeof parsed[0] === 'string') { parsed.forEach(text => createDescField(text, true)); }
+                        else { parsed.forEach(item => createDescField(item.text, item.active)); }
+                    } else { createDescField(); }
+                } catch(e) { createDescField(); }
+            } else { createDescField(); }
+            updateStats();
+        };
+        
+        function showMsg(m, t) { const msg = document.getElementById('message'); msg.textContent = m; msg.className = t; msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 4000); }
+        
+        function processText() {
+            let text = inputTextElem.value.trim(); if (!text) return showMsg("Insira um texto!", "error");
+            const descs = Array.from(descContainer.querySelectorAll('.desc-field-wrapper')).filter(w => !w.classList.contains('disabled')).map(w => w.querySelector('.desc-textarea').value.trim()).filter(v => v !== "");
+            if (formatToggle.checked) { text = text.replace(/\n+/g, ' ').replace(/([.?!]+)\s*/g, "$1\n").trim(); inputTextElem.value = text; }
+            updateStats();
+            const limit = parseInt(charLimitElem.value); outputDiv.innerHTML = '';
+            const prefix = descs.length > 0 ? descs.join("\n\n") + "\n\n" : "";
+            let lines = text.split('\n'), currentPart = "", partIdx = 1;
+            lines.forEach((line) => {
+                if (!line.trim()) return;
+                if ((prefix.length + currentPart.length + line.length + 1) > limit && currentPart !== "") { createPart(prefix + currentPart.trim(), partIdx++); currentPart = line + "\n"; }
+                else currentPart += line + "\n";
+            });
+            if (currentPart.trim()) createPart(prefix + currentPart.trim(), partIdx);
+            showMsg("Processado com sucesso!", "success");
+        }
+        
+        function createPart(txt, idx) {
+            const div = document.createElement('div'); div.className = 'part-container';
+            div.innerHTML = `<div class="part-header"><h3>Parte ${idx}</h3><span>${txt.length} carac. | ${formatTime(txt.length)}</span></div><textarea class="part-textarea" title="Texto da Parte ${idx}">${txt}</textarea><div class="part-actions"><div class="audio-wrapper"><button class="play-btn" title="Gerar e Ouvir com IA"><i class="fas fa-play"></i> Gerar Áudio</button></div><button class="copy-btn" title="Copiar texto"><i class="fas fa-copy"></i> Copiar</button><button class="clear-part-btn" title="Excluir"><i class="fas fa-trash"></i></button></div>`;
+            const textarea = div.querySelector('textarea');
+            const wrapper = div.querySelector('.audio-wrapper');
+            
+            textarea.addEventListener('input', () => {
+                wrapper.innerHTML = '<button class="play-btn" title="Gerar e Ouvir com IA"><i class="fas fa-play"></i> Gerar Áudio</button>';
+                wrapper.querySelector('.play-btn').onclick = (e) => toggleSpeech(textarea.value, wrapper, idx);
+            });
+            
+            wrapper.querySelector('.play-btn').onclick = (e) => toggleSpeech(textarea.value, wrapper, idx);
+            
+            div.querySelector('.copy-btn').onclick = (e) => {
+                // Reseta todos os botões de cópia e áreas de texto
+                document.querySelectorAll('.part-container .copy-btn').forEach(btn => {
+                    btn.classList.remove('copied-active');
+                    btn.innerHTML = '<i class="fas fa-copy"></i> Copiar';
+                });
+                document.querySelectorAll('.copied-textarea').forEach(ta => {
+                    ta.classList.remove('copied-textarea');
+                });
+                
+                textarea.focus(); textarea.select();
+                textarea.classList.add('copied-textarea'); // Mantém o destaque visual na caixa
+                
+                if (copyToClipboard(textarea.value)) { 
+                    e.currentTarget.classList.add('copied-active');
+                    e.currentTarget.innerHTML = '<i class="fas fa-check"></i> Copiado!'; 
+                }
+            };
+            div.querySelector('.clear-part-btn').onclick = () => {
+                showConfirm(`Tem certeza que deseja excluir a Parte ${idx}?`, () => div.remove());
+            };
+            outputDiv.appendChild(div);
+        }
+        
+        splitButton.onclick = processText;
+        clearMainTextButton.onclick = () => { 
+            showConfirm("Apagar todo o roteiro principal e os blocos já divididos? Esta ação não pode ser desfeita.", () => {
+                inputTextElem.value = ''; 
+                outputDiv.innerHTML = ''; 
+                aiOutput.style.display = 'none'; 
+                inputTextElem.classList.remove('copied-textarea');
+                updateStats(); 
+                showMsg("Roteiro limpo! (Instruções e API mantidas)", "success"); 
+            });
+        };
+        
+        copyMainTextButton.onclick = () => { 
+            document.querySelectorAll('.copied-textarea').forEach(ta => ta.classList.remove('copied-textarea'));
+            inputTextElem.focus(); 
+            inputTextElem.select(); 
+            inputTextElem.classList.add('copied-textarea');
+            if (copyToClipboard(inputTextElem.value)) showMsg("Copiado!", "success"); 
+        };
+        
+        // --- GERADOR DE TXT ---
+        downloadTxtOpt.onclick = (e) => {
+            e.preventDefault();
+            const text = inputTextElem.value;
+            if (!text.trim()) return showMsg("O roteiro está vazio!", "error");
+            
+            exportMainBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
+            
+            const date = new Date().toISOString().slice(0,10);
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); 
+            a.href = url; 
+            a.download = `roteiro_cronicas_estelares_${date}.txt`;
+            document.body.appendChild(a); 
+            a.click(); 
+            document.body.removeChild(a); 
+            window.URL.revokeObjectURL(url);
+            showMsg("TXT baixado com sucesso!", "success");
+            setTimeout(() => { exportMainBtn.innerHTML = '<i class="fas fa-download"></i> Baixar <i class="fas fa-caret-down"></i>'; }, 1000);
+        };
+
+        // --- GERADOR DE PDF ---
+        downloadPdfOpt.onclick = (e) => {
+            e.preventDefault();
+            const text = inputTextElem.value;
+            if (!text.trim()) return showMsg("O roteiro está vazio!", "error");
+            
+            exportMainBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
+            exportMainBtn.disabled = true;
+
+            const tempDiv = document.createElement('div');
+            tempDiv.style.padding = '30px';
+            tempDiv.style.fontFamily = 'Arial, sans-serif';
+            tempDiv.style.fontSize = '14px';
+            tempDiv.style.lineHeight = '1.6';
+            tempDiv.style.color = '#000';
+            tempDiv.style.background = '#fff';
+            
+            const date = new Date().toLocaleDateString('pt-BR');
+            tempDiv.innerHTML = `<h2 style="text-align:center; color:#2c3e50; margin-bottom:20px;">Roteiro - Crônicas Estelares</h2><p style="text-align:right; font-size:12px; color:#7f8c8d;">Data: ${date}</p><hr style="margin-bottom:20px;"><div style="text-align:justify;">${text.replace(/\n/g, '<br>')}</div>`;
+
+            const opt = {
+                margin:       15,
+                filename:     'roteiro_cronicas_estelares.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(tempDiv).save().then(() => {
+                showMsg("PDF baixado com sucesso!", "success");
+                exportMainBtn.innerHTML = '<i class="fas fa-download"></i> Baixar <i class="fas fa-caret-down"></i>';
+                exportMainBtn.disabled = false;
+            }).catch(err => {
+                console.error(err);
+                showMsg("Erro ao gerar PDF", "error");
+                exportMainBtn.innerHTML = '<i class="fas fa-download"></i> Baixar <i class="fas fa-caret-down"></i>';
+                exportMainBtn.disabled = false;
+            });
+        };
+    </script>
+</body>
+</html>
