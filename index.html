@@ -3,144 +3,52 @@
 <head>
 
 <!-- ================= INÍCIO DO CÓDIGO CAMALEÃO ================= -->
+<!-- CÓDIGO CAMALEÃO V9.2 (Para o Comandante colar no Divisor Inteligente) -->
 <script>
-    // CÓDIGO CAMALEÃO v9.1 (Atualizado para o Divisor Inteligente)
     window.addEventListener('message', function(event) {
-        if (event.data) {
-            
-            // 1. Camuflagem de Cores (Ajusta o tema Claro/Escuro)
-            if (event.data.action === 'setTheme') {
-                const theme = event.data.theme;
-                if (theme === 'light') {
-                    document.body.classList.add('light-theme');
-                    document.body.classList.remove('dark-theme');
-                } else {
-                    document.body.classList.remove('light-theme');
-                    document.body.classList.add('dark-theme');
-                }
-            }
-
-            // 2. Modo Módulo Embutido (Ocultar TUDO o que for externo)
-            if (event.data.isPortal === true) {
-                
-                // ATAQUE 1: Seletores de Estrutura
-                const seletores = [
-                    'header', 'footer', '.banner', '[class*="banner"]', 
-                    '.footer-links', '.theme-switcher', '#theme-toggle', '.back-to-top', 'nav',
-                    'a[href="/"]', 'a[href="index.html"]', 
-                    'a[href*="cronicasestelares"]'
-                ].join(', ');
-
-                document.querySelectorAll(seletores).forEach(function(el) { 
-                    if(el) el.style.display = 'none'; 
-                });
-
-                // ATAQUE 2: Caçador de Elementos Iniciais (Destrói o primeiro título da página)
-                const primeiroTitulo = document.querySelector('h1, h2, .title, .page-title, [class*="titulo"], .header-title');
-                if (primeiroTitulo) {
-                    primeiroTitulo.style.display = 'none';
-                }
-
-                // ATAQUE 3: Caçador de Texto Implacável (Busca botões e títulos pelo que está escrito)
-                const todosElementos = document.querySelectorAll('a, button, h1, h2, h3, h4, span, div, p, strong, b');
-                todosElementos.forEach(function(el) {
-                    // Ignora elementos que são "caixas grandes" com muitos itens dentro para não apagar a ferramenta inteira
-                    if (el.children.length > 1) return;
-                    
-                    const texto = el.textContent.toLowerCase().trim();
-                    const link = el.href ? el.href.toLowerCase() : '';
-                    
-                    // 3.1 Caça Botão Home
-                    if (texto === 'home' || texto === 'início' || texto === 'inicio' || texto === 'voltar ao portal' || link.includes('cronicasestelares.vercel.app')) {
-                        el.style.display = 'none';
-                    }
-
-                    // 3.2 Caça Títulos Rebeldes (Nomes exatos das ferramentas)
-                    const nomesProibidos = [
-                        'divisor inteligente', // <-- ADICIONADO PARA O NOVO APP
-                        'divisor de texto', 
-                        'conversor de roteiro para .srt', 
-                        'conversor para .srt',
-                        'conversor srt',
-                        'remover silêncio do áudio', 
-                        'remover silêncio',
-                        'variador de gmail',
-                        'apoio ao projeto',
-                        'seja um protagonista'
-                    ];
-
-                    if (nomesProibidos.includes(texto)) {
-                        el.style.display = 'none';
-                    }
-                });
-
-                // ATAQUE 4: Camuflagem Estelar (Injeção de CSS para Cores e Transparência Expandida)
-                const camaleaoStyle = document.createElement('style');
-                camaleaoStyle.innerHTML = `
-                    /* 1. Fundo Transparente para herdar o visual da Nave-Mãe */
-                    html, body, main, #root, #__next {
-                        background: transparent !important;
-                        background-color: transparent !important;
-                    }
-
-                    /* 2. Sobrescreve as variáveis do Comandante para as cores exatas do Portal */
-                    :root {
-                        --color-bg: transparent !important;
-                        --color-card-bg: #1e1e20 !important; /* Surface Escura */
-                        --color-text: #e3e3e3 !important; /* Texto Escuro */
-                        --color-card-border: #333537 !important;
-                        --color-primary: #00f2fe !important;
-                    }
-
-                    body.light-theme {
-                        --color-card-bg: #f0f4f9 !important; /* Surface Clara */
-                        --color-text: #1f1f1f !important; /* Texto Claro */
-                        --color-card-border: #d1d9e0 !important;
-                    }
-
-                    /* 3. Força elementos Tailwind hardcoded a respeitarem a camuflagem (Modo Varredura Total) */
-                    [class*="bg-gray-"], [class*="bg-slate-"], [class*="bg-zinc-"], [class*="bg-neutral-"], [class*="bg-stone-"], .bg-white, .bg-black, .bg-[#0a0f18], .bg-[#101a2d] { 
-                        background-color: var(--color-card-bg) !important; 
-                        border-color: var(--color-card-border) !important;
-                    }
-                    [class*="text-gray-"], [class*="text-slate-"], [class*="text-zinc-"], [class*="text-neutral-"], [class*="text-stone-"], .text-white, .text-black { 
-                        color: var(--color-text) !important; 
-                    }
-
-                    /* 4. Remove barras de rolagem duplas dentro do iframe */
-                    ::-webkit-scrollbar { display: none; }
-                    * { scrollbar-width: none; }
-                `;
-                document.head.appendChild(camaleaoStyle);
-
-                // Limpeza da área de trabalho (Puxa a ferramenta para o topo)
-                const areaPrincipal = document.querySelector('main');
-                if (areaPrincipal) {
-                    areaPrincipal.style.paddingTop = '0.5rem';
-                    areaPrincipal.style.marginTop = '0';
-                }
-
-                // Trava a barra de rolagem dupla (deixa apenas a rolagem do Portal)
-                document.documentElement.style.overflowY = 'hidden';
-                document.body.style.overflowY = 'hidden';
-
-                // 3. Ajuste de Altura Anti-Loop (Informa ao Portal o tamanho exato do App)
-                let ultimaAltura = 0;
-                function informarAltura() {
-                    const alturaAtual = document.body.scrollHeight;
-                    if (alturaAtual !== ultimaAltura && alturaAtual > 0) {
-                        ultimaAltura = alturaAtual;
-                        window.parent.postMessage({ action: 'resizeIframe', height: alturaAtual }, '*');
-                    }
-                }
-
-                informarAltura();
-                // O MutationObserver garante que se a ferramenta mudar de tamanho (ex: gerar um texto), o iframe cresce junto
-                const observer = new MutationObserver(informarAltura);
-                observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+        if (event.data && event.data.action === 'setTheme') {
+            const isLight = event.data.theme === 'light';
+            if (isLight) {
+                document.documentElement.classList.remove('dark');
+                document.body.classList.add('light-theme');
+            } else {
+                document.documentElement.classList.add('dark');
+                document.body.classList.remove('light-theme');
             }
         }
     });
+
+    const camaleaoStyle = document.createElement('style');
+    camaleaoStyle.innerHTML = `
+        html, body, #root, #__next { background: transparent !important; background-color: transparent !important; }
+        :root {
+            --color-card-bg: #1e1e20 !important;
+            --color-text: #e3e3e3 !important;
+            --color-card-border: #333537 !important;
+        }
+        body.light-theme {
+            --color-card-bg: #f0f4f9 !important;
+            --color-text: #1f1f1f !important;
+            --color-card-border: #d1d9e0 !important;
+        }
+        /* Varredura Total Tailwind */
+        [class*="bg-gray-"], [class*="bg-slate-"], [class*="bg-zinc-"], [class*="bg-neutral-"], .bg-white, .bg-black { 
+            background-color: var(--color-card-bg) !important; 
+            border-color: var(--color-card-border) !important;
+        }
+        [class*="text-gray-"], [class*="text-slate-"], [class*="text-zinc-"], .text-white, .text-black { 
+            color: var(--color-text) !important; 
+        }
+        ::-webkit-scrollbar { display: none; }
+        * { scrollbar-width: none; }
+    `;
+    document.head.appendChild(camaleaoStyle);
+
+    // Envia altura para o Portal
+    const observer = new ResizeObserver(() => {
+        window.parent.postMessage({ action: 'resizeIframe', height: document.body.scrollHeight + 50 }, '*');
+    });
+    window.addEventListener('DOMContentLoaded', () => observer.observe(document.body));
 </script>
 <!-- ================= FIM DO CÓDIGO CAMALEÃO ================= -->
     
