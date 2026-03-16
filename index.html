@@ -3,44 +3,68 @@
 <head>
 
 <!-- ================= INÍCIO DO CÓDIGO CAMALEÃO ================= -->
-<!-- CÓDIGO CAMALEÃO V9.1 (Versão Estável) -->
+<!-- 
+  CÓDIGO CAMALEÃO V9.1 - EDIÇÃO ESPECIAL GEMINI
+  Desenvolvido especificamente para o Divisor de Texto Inteligente 
+-->
 <style>
-    /* Oculta a barra de rolagem dupla dentro do iframe para usar apenas a da Nave-Mãe */
-    ::-webkit-scrollbar { display: none; }
-    * { scrollbar-width: none; }
+    /* Oculta scrollbars internas para usar a da Nave-Mãe */
+    ::-webkit-scrollbar { display: none !important; }
+    * { scrollbar-width: none !important; }
+
+    /* Ajustes de transparência para fusão total com o Portal */
+    body { background: transparent !important; }
+    .container { 
+        box-shadow: none !important; 
+        background-color: var(--container-bg) !important;
+    }
 </style>
 
 <script>
-    // 1. Recebe o sinal de camuflagem (Tema) da Nave-Mãe
+    // 1. RECEPÇÃO DE SINAL DE TEMA (Nave-Mãe -> App)
     window.addEventListener('message', function(event) {
         if (event.data && event.data.action === 'setTheme') {
             const isLight = event.data.theme === 'light';
             
-            // Alterna as classes nativas do Tailwind e do CSS padrão
+            // Ajuste específico para as classes deste App (light-mode)
             if (isLight) {
-                document.documentElement.classList.remove('dark');
-                document.body.classList.remove('dark-theme');
-                document.body.classList.add('light-theme');
+                document.body.classList.add('light-mode');
+                // Troca o ícone do botão de tema se ele existir
+                const themeIcon = document.querySelector('#theme-toggle i');
+                if (themeIcon) { themeIcon.className = 'fas fa-sun'; }
             } else {
-                document.documentElement.classList.add('dark');
-                document.body.classList.remove('light-theme');
-                document.body.classList.add('dark-theme');
+                document.body.classList.remove('light-mode');
+                const themeIcon = document.querySelector('#theme-toggle i');
+                if (themeIcon) { themeIcon.className = 'fas fa-moon'; }
             }
         }
     });
 
-    // 2. Envia a altura dinâmica para a Nave-Mãe (Permite expansão infinita sem cortes)
-    const observer = new ResizeObserver(() => {
-        // Envia a altura total do body + uma margem de segurança de 50px
+    // 2. TRANSMISSÃO DE ALTURA (App -> Nave-Mãe)
+    // Permite que o Portal cresça infinitamente conforme o roteiro aumenta
+    const reportHeight = () => {
+        const height = document.documentElement.scrollHeight;
         window.parent.postMessage({ 
             action: 'resizeIframe', 
-            height: document.body.scrollHeight + 50 
+            height: height + 20 // Margem de respiro
         }, '*');
-    });
+    };
+
+    // Observa mudanças no tamanho do conteúdo (como ao expandir caixas de IA)
+    const resizeObserver = new ResizeObserver(reportHeight);
     
     window.addEventListener('DOMContentLoaded', () => {
-        observer.observe(document.body);
+        resizeObserver.observe(document.body);
+        
+        // Remove elementos que podem obstruir a visualização dentro do Portal
+        const homeBtn = document.querySelector('.btn-home');
+        if (homeBtn) homeBtn.style.display = 'none'; // Já existe home no Portal
+        
+        reportHeight();
     });
+
+    // Disparo extra para garantir sincronia após carregamento total
+    window.addEventListener('load', reportHeight);
 </script>
 <!-- ================= FIM DO CÓDIGO CAMALEÃO ================= -->
     
