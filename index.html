@@ -169,7 +169,6 @@
             outline: none;
         }
         .btn-home { top: 20px; left: 20px; }
-        .btn-theme { top: 20px; right: 20px; }
         .floating-btn:hover {
             transform: scale(1.15) translateY(-3px);
             background: var(--link-color);
@@ -608,13 +607,10 @@
 
     <div id="message"></div>
     
-    <!-- BOTÕES FLUTUANTES (HOME E TEMA) -->
+    <!-- BOTÕES FLUTUANTES (HOME) -->
     <a href="https://cronicasestelares.vercel.app/" class="floating-btn btn-home" title="Voltar para a Central de Ferramentas do Comandante Marcos">
         <i class="fas fa-home"></i>
     </a>
-    <button id="theme-toggle" class="floating-btn btn-theme" title="Alternar entre Modo Claro e Escuro">
-        <i class="fas fa-moon"></i>
-    </button>
 
     <div class="container">
         <!-- CAMPO DE CHAVE API (NOVO LOCAL COM LINK) -->
@@ -767,12 +763,8 @@
             if (event.data && event.data.action === 'setTheme') {
                 if (event.data.theme === 'light') {
                     document.body.classList.add('light-mode');
-                    const icon = document.querySelector('#theme-toggle i');
-                    if(icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
                 } else {
                     document.body.classList.remove('light-mode');
-                    const icon = document.querySelector('#theme-toggle i');
-                    if(icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
                 }
             }
         });
@@ -796,7 +788,6 @@
         const outputDiv = document.getElementById('output');
         const currentTextLengthSpan = document.getElementById('currentTextLength');
         const mainNarrationTimeTextSpan = document.getElementById('mainNarrationTimeText');
-        const themeToggleButton = document.getElementById('theme-toggle');
         const copyMainTextButton = document.getElementById('copyMainTextButton');
         const aiMetadataBtn = document.getElementById('aiMetadataBtn');
         const aiOutput = document.getElementById('aiOutput');
@@ -1199,12 +1190,6 @@
             });
         };
         
-        themeToggleButton.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const icon = themeToggleButton.querySelector('i');
-            icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun');
-        });
-        
         function formatTime(len) { const sec = Math.round((len / 1000) * 60); return sec < 60 ? `${sec} seg` : `${Math.floor(sec/60)} min ${sec%60} seg`; }
         
         function updateStats() {
@@ -1276,11 +1261,18 @@
         
         function createPart(txt, idx) {
             const div = document.createElement('div'); div.className = 'part-container';
-            div.innerHTML = `<div class="part-header"><h3>Parte ${idx}</h3><span>${txt.length} carac. | ${formatTime(txt.length)}</span></div><textarea class="part-textarea" title="Texto da Parte ${idx}">${txt}</textarea><div class="part-actions"><div class="audio-wrapper"><button class="play-btn" title="Gerar e Ouvir com IA"><i class="fas fa-play"></i> Gerar Áudio</button></div><button class="copy-btn" title="Copiar texto"><i class="fas fa-copy"></i> Copiar</button><button class="clear-part-btn" title="Excluir"><i class="fas fa-trash"></i></button></div>`;
+            div.innerHTML = `<div class="part-header"><h3>Parte ${idx}</h3><span class="part-stats"></span></div><textarea class="part-textarea" title="Texto da Parte ${idx}"></textarea><div class="part-actions"><div class="audio-wrapper"><button class="play-btn" title="Gerar e Ouvir com IA"><i class="fas fa-play"></i> Gerar Áudio</button></div><button class="copy-btn" title="Copiar texto"><i class="fas fa-copy"></i> Copiar</button><button class="clear-part-btn" title="Excluir"><i class="fas fa-trash"></i></button></div>`;
+            
             const textarea = div.querySelector('textarea');
+            textarea.value = txt; // Atribuição segura ao invés de interpolação no innerHTML
+            
+            const statsSpan = div.querySelector('.part-stats');
+            statsSpan.textContent = `${txt.length} carac. | ${formatTime(txt.length)}`;
+            
             const wrapper = div.querySelector('.audio-wrapper');
             
             textarea.addEventListener('input', () => {
+                statsSpan.textContent = `${textarea.value.length} carac. | ${formatTime(textarea.value.length)}`;
                 wrapper.innerHTML = '<button class="play-btn" title="Gerar e Ouvir com IA"><i class="fas fa-play"></i> Gerar Áudio</button>';
                 wrapper.querySelector('.play-btn').onclick = (e) => toggleSpeech(textarea.value, wrapper, idx);
             });
