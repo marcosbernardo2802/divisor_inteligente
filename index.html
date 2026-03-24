@@ -100,7 +100,7 @@
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             margin: 0;
-            padding: 0; /* Removido padding para ocupar 100% lateral */
+            padding: 0;
             background-color: var(--bg-color);
             background-image: url('https://i.imgur.com/GMiX6Rv.png');
             background-size: cover;
@@ -124,16 +124,16 @@
             position: relative;
             background-color: var(--container-bg);
             padding: 25px;
-            border-radius: 0; /* Removido arredondamento para visual 100% */
+            border-radius: 0; 
             box-shadow: 0 0 30px var(--container-shadow);
             max-width: 100%;
-            width: 100%; /* Alterado de 90% para 100% */
+            width: 100%;
             border: 1px solid var(--container-border);
-            border-left: none; /* Remove bordas laterais para visual limpo */
+            border-left: none;
             border-right: none;
             z-index: 1;
             padding-bottom: 40px;
-            box-sizing: border-box; /* Garante que o padding não estoure a largura */
+            box-sizing: border-box;
         }
         
         /* CONTENTORES DE BOTÕES DE CONTROLO */
@@ -143,13 +143,6 @@
             left: 15px;
             display: flex;
             gap: 10px;
-            z-index: 9999;
-        }
-        
-        .theme-btn-container {
-            position: fixed;
-            top: 15px;
-            right: 15px;
             z-index: 9999;
         }
 
@@ -322,7 +315,8 @@
         }
         body.light-mode .audio-player { color-scheme: light; background-color: #f0f0f5; }
 
-        .play-btn { background: linear-gradient(45deg, #002a5c, #0069d9); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; min-width: 100px; display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%; }
+        .play-btn { background: linear-gradient(45deg, #002a5c, #0069d9); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; min-width: 100px; display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%; transition: all 0.2s; }
+        .play-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0, 105, 217, 0.4); }
         
         #message { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; border-radius: 8px; z-index: 1000; display: none; color: white; font-weight: bold; font-size: 0.9em; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .success { background: #28a745; }
@@ -345,7 +339,7 @@
 <body>
     <div id="confirmModal" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="confirmMessage" style="color:var(--text-primary)">Tens a certeza?</h3>
+            <h3 id="confirmMessage" style="color:var(--text-primary)">Confirmar Ação?</h3>
             <div style="display: flex; justify-content: center; gap: 15px;">
                 <button id="confirmYes" style="padding:10px 20px; background:linear-gradient(45deg, #dc3545, #ff6347); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold">Sim</button>
                 <button id="confirmNo" style="padding:10px 20px; background:#6c757d; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold">Cancelar</button>
@@ -359,12 +353,6 @@
         <a href="https://cronicasestelares.vercel.app/" class="ctrl-btn" title="Início">
             <i class="fas fa-home"></i>
         </a>
-    </div>
-
-    <div class="theme-btn-container">
-        <button id="themeToggle" class="ctrl-btn" title="Alternar Tema Claro/Escuro">
-            <i class="fas fa-moon"></i>
-        </button>
     </div>
 
     <div class="container">
@@ -407,11 +395,37 @@
             <div class="settings-row">
                 <div class="compact-setting">
                     <label for="voiceSelect">Voz:</label>
-                    <select id="voiceSelect">
-                        <option value="Kore">Kore (Feminina)</option>
-                        <option value="Charon">Charon (Masculina)</option>
-                        <option value="Fenrir">Fenrir (Profunda)</option>
-                        <option value="Zephyr">Zephyr (Suave)</option>
+                    <select id="voiceSelect" title="Selecione a voz para o TTS do Gemini">
+                        <option value="Kore" title="Feminina: Calma, versátil e natural">Kore</option>
+                        <option value="Zephyr" title="Feminina: Suave, relaxada e empática">Zephyr</option>
+                        <option value="Puck" title="Masculina: Jovial, enérgica e rápida">Puck</option>
+                        <option value="Charon" title="Masculina: Grave, profunda e narrativa">Charon</option>
+                        <option value="Fenrir" title="Masculina: Profunda, intensa e forte (Estilo locutor)">Fenrir</option>
+                        <option value="Leda" title="Feminina: Equilibrada, profissional e direta">Leda</option>
+                        <option value="Orus" title="Masculina: Confiante, firme e autoritária">Orus</option>
+                        <option value="Aoede" title="Feminina: Expressiva, dinâmica e clara">Aoede</option>
+                        <option value="Callirrhoe" title="Feminina: Aguda, jovial e energética">Callirrhoe</option>
+                        <option value="Autonoe" title="Feminina: Suave, sussurrada e íntima">Autonoe</option>
+                        <option value="Enceladus" title="Masculina: Neutra, jornalística e informativa">Enceladus</option>
+                        <option value="Iapetus" title="Masculina: Grave, séria e ponderada">Iapetus</option>
+                        <option value="Umbriel" title="Masculina: Suave, calma e tranquila">Umbriel</option>
+                        <option value="Algieba" title="Feminina: Formal, acadêmica e precisa">Algieba</option>
+                        <option value="Despina" title="Feminina: Amigável, calorosa e convidativa">Despina</option>
+                        <option value="Erinome" title="Feminina: Narrativa, fluida e contadora de histórias">Erinome</option>
+                        <option value="Algenib" title="Masculina: Rápida, urgente e informativa">Algenib</option>
+                        <option value="Rasalgethi" title="Masculina: Rouca, texturizada e madura">Rasalgethi</option>
+                        <option value="Laomedeia" title="Feminina: Aguda, leve e delicada">Laomedeia</option>
+                        <option value="Achernar" title="Masculina: Padrão, equilibrada e versátil">Achernar</option>
+                        <option value="Alnilam" title="Masculina: Suave, baixa e relaxante">Alnilam</option>
+                        <option value="Schedar" title="Masculina: Forte, projetada e assertiva">Schedar</option>
+                        <option value="Gacrux" title="Masculina: Grave, autoritária e dominante">Gacrux</option>
+                        <option value="Pulcherrima" title="Feminina: Suave, melódica e agradável">Pulcherrima</option>
+                        <option value="Achird" title="Masculina: Neutra, clara e objetiva">Achird</option>
+                        <option value="Zubenelgenubi" title="Masculina: Profunda, ressonante e marcante">Zubenelgenubi</option>
+                        <option value="Vindemiatrix" title="Feminina: Clara, alta e nítida">Vindemiatrix</option>
+                        <option value="Sadachbia" title="Feminina: Neutra, calma e informativa">Sadachbia</option>
+                        <option value="Sadaltager" title="Feminina: Calma, lenta e reflexiva">Sadaltager</option>
+                        <option value="Sulafat" title="Feminina: Rápida, enérgica e animada">Sulafat</option>
                     </select>
                 </div>
                 <div class="compact-setting">
@@ -449,7 +463,6 @@
         if (isInsidePortal) document.body.classList.add('is-portal');
 
         const body = document.body;
-        const themeToggle = document.getElementById('themeToggle');
         const inputTextElem = document.getElementById('inputText');
         const outputDiv = document.getElementById('output');
         const splitButton = document.getElementById('splitButton');
@@ -457,30 +470,13 @@
         const descContainer = document.getElementById('descContainer');
         const apiKeyInput = document.getElementById('apiKeyInput');
 
-        // Lógica de Temas
         function applyTheme(theme) {
-            if (theme === 'light') {
-                body.classList.add('light-mode');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            } else {
-                body.classList.remove('light-mode');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            }
-            localStorage.setItem('cronicas_theme', theme);
+            if (theme === 'light') body.classList.add('light-mode');
+            else body.classList.remove('light-mode');
         }
 
-        themeToggle.onclick = () => {
-            const currentTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
-            applyTheme(currentTheme);
-        };
-
-        const savedTheme = localStorage.getItem('cronicas_theme') || 'dark';
-        applyTheme(savedTheme);
-
         window.addEventListener('message', (event) => {
-            if (event.data && event.data.action === 'setTheme') {
-                applyTheme(event.data.theme);
-            }
+            if (event.data && event.data.action === 'setTheme') applyTheme(event.data.theme);
         });
 
         function showMsg(m, t) {
