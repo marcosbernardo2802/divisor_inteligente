@@ -78,7 +78,6 @@
             padding: 0 !important;
         }
         body.is-portal::before { display: none !important; }
-        body.is-portal .btn-home { display: none !important; }
         body.is-portal .container { 
             box-shadow: none !important; 
             width: 100% !important; 
@@ -150,49 +149,6 @@
             border: none;
             z-index: 1;
             padding-bottom: 40px;
-        }
-        
-        /* BOTÕES FLUTUANTES */
-        .floating-btn {
-            position: fixed;
-            z-index: 9999;
-            background: var(--part-bg);
-            border: 2px solid var(--link-color);
-            color: var(--link-color);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.1em;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 191, 255, 0.2);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-decoration: none;
-            backdrop-filter: blur(5px);
-            outline: none;
-        }
-        .btn-home { top: 20px; left: 20px; }
-        .btn-theme { top: 20px; right: 20px; }
-        .floating-btn:hover {
-            transform: scale(1.15) translateY(-3px);
-            background: var(--link-color);
-            color: white;
-            box-shadow: 0 8px 20px rgba(0, 191, 255, 0.6);
-            border-color: transparent;
-        }
-        body.light-mode .floating-btn {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: var(--link-color);
-            color: var(--link-color);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        body.light-mode .floating-btn:hover {
-            background: var(--link-color);
-            color: white;
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
-            border-color: transparent;
         }
 
         .horizontal-divider {
@@ -617,14 +573,6 @@
     </div>
 
     <div id="message"></div>
-    
-    <!-- BOTÕES FLUTUANTES (HOME E TEMA) -->
-    <a href="https://cronicasestelares.vercel.app/" class="floating-btn btn-home" title="Voltar para a Central de Ferramentas do Comandante Marcos">
-        <i class="fas fa-home"></i>
-    </a>
-    <button id="theme-toggle" class="floating-btn btn-theme" title="Alternar entre Modo Claro e Escuro">
-        <i class="fas fa-moon"></i>
-    </button>
 
     <div class="container">
         <!-- CAMPO DE CHAVE API (NOVO LOCAL COM LINK) -->
@@ -805,7 +753,6 @@
         const outputDiv = document.getElementById('output');
         const currentTextLengthSpan = document.getElementById('currentTextLength');
         const mainNarrationTimeTextSpan = document.getElementById('mainNarrationTimeText');
-        const themeToggleButton = document.getElementById('theme-toggle');
         const copyMainTextButton = document.getElementById('copyMainTextButton');
         const aiMetadataBtn = document.getElementById('aiMetadataBtn');
         const aiOutput = document.getElementById('aiOutput');
@@ -1204,12 +1151,6 @@
                 updateStats();
             });
         };
-        
-        themeToggleButton.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const icon = themeToggleButton.querySelector('i');
-            icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun');
-        });
         
         function formatTime(len) { const sec = Math.round((len / 1000) * 60); return sec < 60 ? `${sec} seg` : `${Math.floor(sec/60)} min ${sec%60} seg`; }
         
