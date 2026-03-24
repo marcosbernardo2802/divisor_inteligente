@@ -78,7 +78,7 @@
             background-color: transparent !important;
         }
         body.is-portal::before { display: none !important; }
-        body.is-portal .btn-home { display: none !important; }
+        body.is-portal .floating-btns-container { display: none !important; }
         body.is-portal .container { 
             box-shadow: none !important; 
             width: 100% !important; 
@@ -133,9 +133,24 @@
             padding-bottom: 40px;
         }
         
-        .floating-btn {
+        /* CONTENTORES DE BOTÕES DE CONTROLO */
+        .floating-btns-container {
             position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
             z-index: 9999;
+        }
+        
+        .theme-btn-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .ctrl-btn {
             background: var(--part-bg);
             border: 2px solid var(--link-color);
             color: var(--link-color);
@@ -151,9 +166,9 @@
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-decoration: none;
             outline: none;
+            backdrop-filter: blur(5px);
         }
-        .btn-home { top: 20px; left: 20px; }
-        .floating-btn:hover {
+        .ctrl-btn:hover {
             transform: scale(1.15) translateY(-3px);
             background: var(--link-color);
             color: white;
@@ -244,9 +259,6 @@
             font-size: 0.65em; padding: 2px 5px; border-radius: 4px; margin-left: 4px; font-weight: bold;
         }
 
-        .main-btn-dropdown { flex: 1; min-width: 150px; position: relative; display: flex; }
-        .main-btn-dropdown > button { width: 100%; }
-
         .settings-panel {
             background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px;
             border: 1px solid var(--container-border); margin-bottom: 15px; display: flex; flex-direction: column; gap: 15px;
@@ -273,7 +285,6 @@
         .header-actions { display: flex; gap: 8px; }
         #copyMainTextButton { background: linear-gradient(45deg, #28a745, #32cd32); color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85em; }
         
-        .dropdown-export { position: relative; display: inline-block; }
         .export-main-btn {
             background: linear-gradient(45deg, #e74c3c, #f39c12); color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85em;
             height: 100%; display: flex; align-items: center; justify-content: center; gap: 5px;
@@ -289,16 +300,14 @@
             color: var(--text-primary); padding: 10px 15px; text-decoration: none;
             display: flex; align-items: center; gap: 8px; font-size: 0.9em;
         }
-        body.light-mode .dropdown-content a { color: #333; font-weight: bold; }
         .dropdown-content a:hover { background-color: rgba(135, 206, 235, 0.2); color: var(--link-hover-color); }
         .dropdown-content.show { display: block; }
 
         .part-container { background-color: var(--part-bg); border: 1px solid var(--part-border); padding: 15px; margin-top: 15px; border-radius: 8px; animation: fadeInUp 0.5s ease; }
         .part-header { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center; }
         .part-textarea { width: 100%; min-height: 120px; border-radius: 4px; padding: 10px; line-height: 1.4; font-size: 0.85em; resize: vertical; }
-        .copied-textarea { background-color: rgba(0, 191, 255, 0.15) !important; border: 1px solid #00bfff !important; box-shadow: 0 0 10px rgba(0, 191, 255, 0.3) !important; }
+        .copied-textarea { background-color: rgba(0, 191, 255, 0.15) !important; border: 1px solid #00bfff !important; }
         
-        .part-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
         .copy-btn { background: linear-gradient(45deg, #28a745, #32cd32); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; transition: all 0.3s; }
         .copy-btn.copied-active { background: linear-gradient(45deg, #007bff, #00bfff); }
 
@@ -309,17 +318,13 @@
         }
         body.light-mode .audio-player { color-scheme: light; background-color: #f0f0f5; }
 
-        .play-btn { background: linear-gradient(45deg, #002a5c, #0069d9); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; min-width: 100px; display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%; transition: all 0.2s; }
-        .play-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0, 105, 217, 0.4); }
-        .download-audio-btn { background: linear-gradient(45deg, #e67e22, #d35400); color: white; border: none; padding: 0 12px; border-radius: 4px; cursor: pointer; height: 36px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        
-        .clear-part-btn { background: linear-gradient(45deg, #dc3545, #ff6347); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; }
+        .play-btn { background: linear-gradient(45deg, #002a5c, #0069d9); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; min-width: 100px; display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%; }
         
         #message { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; border-radius: 8px; z-index: 1000; display: none; color: white; font-weight: bold; font-size: 0.9em; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .success { background: #28a745; }
         .error { background: #dc3545; }
         
-        .ai-output-box { background: rgba(0, 86, 179, 0.1); border: 1px solid rgba(0, 86, 179, 0.4); border-radius: 8px; padding: 15px; margin-top: 15px; display: none; animation: fadeInUp 0.5s ease; }
+        .ai-output-box { background: rgba(0, 86, 179, 0.1); border: 1px solid rgba(0, 86, 179, 0.4); border-radius: 8px; padding: 15px; margin-top: 15px; display: none; }
         .ai-output-content { 
             font-size: 0.85em; color: #e6f2ff; white-space: pre-wrap; line-height: 1.6; width: 100%; min-height: 250px; 
             background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(0, 86, 179, 0.3); border-radius: 6px; 
@@ -345,9 +350,18 @@
     </div>
 
     <div id="message"></div>
-    <a href="https://cronicasestelares.vercel.app/" class="floating-btn btn-home" title="Início">
-        <i class="fas fa-home"></i>
-    </a>
+    
+    <div class="floating-btns-container">
+        <a href="https://cronicasestelares.vercel.app/" class="ctrl-btn" title="Início">
+            <i class="fas fa-home"></i>
+        </a>
+    </div>
+
+    <div class="theme-btn-container">
+        <button id="themeToggle" class="ctrl-btn" title="Alternar Tema Claro/Escuro">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
 
     <div class="container">
         <div class="form-group">
@@ -368,7 +382,7 @@
             <div class="label-wrapper">
                 <label for="inputText">Roteiro Principal:</label>
                 <div class="header-actions">
-                    <div class="dropdown-export">
+                    <div class="dropdown-export" style="position:relative">
                         <button class="export-main-btn" id="exportMainBtn">Baixar <i class="fas fa-caret-down"></i></button>
                         <div class="dropdown-content">
                             <a href="#" id="downloadPdfOpt"><i class="fas fa-file-pdf"></i> PDF</a>
@@ -410,9 +424,7 @@
 
         <div class="main-buttons">
             <button id="splitButton" class="split-btn"><i class="fas fa-scissors"></i> Processar e Dividir</button>
-            <div class="main-btn-dropdown">
-                <button id="aiRefineMainBtn" class="ai-btn"><i class="fas fa-user-astronaut"></i> ✨ Personagens <span class="api-badge">API</span></button>
-            </div>
+            <button id="aiRefineMainBtn" class="ai-btn"><i class="fas fa-user-astronaut"></i> ✨ Personagens <span class="api-badge">API</span></button>
             <button id="aiMetadataBtn" class="ai-btn"><i class="fas fa-rocket"></i> ✨ Metadados SEO <span class="api-badge">API</span></button>
             <button id="clearMainTextButton" class="clear-main-btn"><i class="fas fa-trash"></i> Limpar Tudo</button>
         </div>
@@ -421,7 +433,7 @@
             <textarea id="aiOutputContent" class="ai-output-content" spellcheck="false"></textarea>
             <div style="display:flex; gap:10px; margin-top:10px">
                 <button id="copyAiOutput" class="copy-btn" style="flex:1">Copiar Resultado</button>
-                <button onclick="document.getElementById('aiOutput').style.display='none'" class="clear-part-btn">Fechar</button>
+                <button onclick="document.getElementById('aiOutput').style.display='none'" class="clear-main-btn" style="flex:0.3; padding:8px">Fechar</button>
             </div>
         </div>
 
@@ -432,14 +444,42 @@
         const isInsidePortal = window.self !== window.top;
         if (isInsidePortal) document.body.classList.add('is-portal');
 
+        const body = document.body;
+        const themeToggle = document.getElementById('themeToggle');
         const inputTextElem = document.getElementById('inputText');
         const outputDiv = document.getElementById('output');
         const splitButton = document.getElementById('splitButton');
         const voiceSelect = document.getElementById('voiceSelect');
         const descContainer = document.getElementById('descContainer');
         const apiKeyInput = document.getElementById('apiKeyInput');
-        const aiOutput = document.getElementById('aiOutput');
-        const aiOutputContent = document.getElementById('aiOutputContent');
+
+        // Lógica de Temas
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                body.classList.add('light-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                body.classList.remove('light-mode');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+            localStorage.setItem('cronicas_theme', theme);
+        }
+
+        themeToggle.onclick = () => {
+            const currentTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+            applyTheme(currentTheme);
+        };
+
+        // Inicializar tema
+        const savedTheme = localStorage.getItem('cronicas_theme') || 'dark';
+        applyTheme(savedTheme);
+
+        // Mensagens do Portal
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.action === 'setTheme') {
+                applyTheme(event.data.theme);
+            }
+        });
 
         function showMsg(m, t) {
             const msg = document.getElementById('message');
@@ -457,18 +497,17 @@
             temp.value = text; document.body.appendChild(temp);
             temp.select(); document.execCommand('copy');
             document.body.removeChild(temp);
-            showMsg("Copiado para a área de transferência!", "success");
+            showMsg("Copiado!", "success");
             return true;
         }
 
         async function createGeminiPlayer(text, wrapper, voice, idx) {
             const btn = wrapper.querySelector('.play-btn');
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> A carregar...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             btn.disabled = true;
 
             try {
-                const apiKey = ""; // Proxy handles this in Canvas
+                const apiKey = ""; 
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{ parts: [{ text: `Age como um narrador profissional e narra o seguinte texto: ${text}` }] }],
@@ -490,11 +529,10 @@
                 const audioUrl = URL.createObjectURL(audioBlob);
                 
                 wrapper.innerHTML = `<audio controls class="audio-player" autoplay><source src="${audioUrl}"></audio>
-                                    <button onclick="const a=document.createElement('a');a.href='${audioUrl}';a.download='parte_${idx}.wav';a.click();" class="download-audio-btn"><i class="fas fa-download"></i></button>`;
+                                    <button onclick="const a=document.createElement('a');a.href='${audioUrl}';a.download='parte_${idx}.wav';a.click();" class="download-audio-btn" title="Descarregar"><i class="fas fa-download"></i></button>`;
             } catch (e) {
-                console.error(e);
-                showMsg("Erro ao gerar áudio.", "error");
-                btn.innerHTML = originalHtml;
+                showMsg("Erro no Áudio.", "error");
+                btn.innerHTML = "Gerar Áudio";
                 btn.disabled = false;
             }
         }
@@ -505,83 +543,64 @@
             div.innerHTML = `
                 <div class="part-header">
                     <h3>Parte ${idx}</h3>
-                    <span class="part-stats">${txt.length} carac. | ${formatTime(txt.length)}</span>
+                    <span style="font-size:0.8em; opacity:0.8">${txt.length} carac. | ${formatTime(txt.length)}</span>
                 </div>
                 <textarea class="part-textarea"></textarea>
                 <div class="part-actions">
-                    <div class="audio-wrapper">
-                        <button class="play-btn">Gerar Áudio</button>
-                    </div>
+                    <div class="audio-wrapper"><button class="play-btn">Gerar Áudio</button></div>
                     <button class="copy-btn"><i class="fas fa-copy"></i> Copiar</button>
-                    <button onclick="this.closest('.part-container').remove()" class="clear-part-btn"><i class="fas fa-trash"></i></button>
+                    <button onclick="this.closest('.part-container').remove()" class="clear-main-btn" style="flex:0; padding:6px 12px"><i class="fas fa-trash"></i></button>
                 </div>`;
             
             const ta = div.querySelector('textarea');
             ta.value = txt;
-            
-            const play = div.querySelector('.play-btn');
-            play.onclick = () => createGeminiPlayer(ta.value, div.querySelector('.audio-wrapper'), voiceSelect.value, idx);
-            
+            div.querySelector('.play-btn').onclick = () => createGeminiPlayer(ta.value, div.querySelector('.audio-wrapper'), voiceSelect.value, idx);
             div.querySelector('.copy-btn').onclick = (e) => {
                 if(copyToClipboard(ta.value)) {
                     e.currentTarget.classList.add('copied-active');
                     ta.classList.add('copied-textarea');
                 }
             };
-            
             outputDiv.appendChild(div);
         }
 
         splitButton.onclick = () => {
             let text = inputTextElem.value.trim();
             if (!text) return showMsg("Insere um texto!", "error");
-            
             outputDiv.innerHTML = '';
             const limit = parseInt(document.getElementById('charLimit').value);
-            
-            if (document.getElementById('formatToggle').checked) {
-                text = text.replace(/\n+/g, ' ').replace(/([.?!]+)\s*/g, "$1\n").trim();
-            }
-
+            if (document.getElementById('formatToggle').checked) text = text.replace(/\n+/g, ' ').replace(/([.?!]+)\s*/g, "$1\n").trim();
             const prefixArr = Array.from(descContainer.querySelectorAll('textarea')).map(t => t.value.trim()).filter(v => v);
             const prefix = prefixArr.length ? prefixArr.join('\n\n') + '\n\n' : '';
-
             let currentPart = "";
             let partIdx = 1;
-            const lines = text.split('\n');
-
-            lines.forEach(line => {
+            text.split('\n').forEach(line => {
                 if ((prefix.length + currentPart.length + line.length) > limit && currentPart) {
                     createPart(prefix + currentPart.trim(), partIdx++);
                     currentPart = "";
                 }
                 currentPart += line + "\n";
             });
-
             if (currentPart.trim()) createPart(prefix + currentPart.trim(), partIdx);
-            showMsg("Processado com sucesso!", "success");
+            showMsg("Processado!", "success");
         };
 
         document.getElementById('addDescBtn').onclick = () => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'desc-field-wrapper';
-            wrapper.innerHTML = `<textarea class="desc-textarea" placeholder="Instrução de voz ou contexto..."></textarea>
-                                <div class="field-actions">
-                                    <button onclick="this.closest('.desc-field-wrapper').classList.toggle('disabled')" class="toggle-desc-btn"><i class="fas fa-eye"></i></button>
-                                    <button onclick="this.closest('.desc-field-wrapper').remove()" class="remove-desc-btn"><i class="fas fa-times"></i></button>
-                                </div>`;
-            descContainer.appendChild(wrapper);
+            const div = document.createElement('div');
+            div.className = 'desc-field-wrapper';
+            div.innerHTML = `<textarea class="desc-textarea" placeholder="Instrução..."></textarea>
+                            <div class="field-actions">
+                                <button onclick="this.closest('.desc-field-wrapper').classList.toggle('disabled')" class="toggle-desc-btn"><i class="fas fa-eye"></i></button>
+                                <button onclick="this.closest('.desc-field-wrapper').remove()" class="remove-desc-btn"><i class="fas fa-times"></i></button>
+                            </div>`;
+            descContainer.appendChild(div);
         };
 
         document.getElementById('copyMainTextButton').onclick = () => copyToClipboard(inputTextElem.value);
         document.getElementById('clearMainTextButton').onclick = () => {
-            if(confirm("Desejas limpar tudo?")) {
-                inputTextElem.value = "";
-                outputDiv.innerHTML = "";
-            }
+            if(confirm("Limpar tudo?")) { inputTextElem.value = ""; outputDiv.innerHTML = ""; }
         };
 
-        // UI Interactions
         document.getElementById('exportMainBtn').onclick = (e) => {
             e.stopPropagation();
             document.querySelector('.dropdown-content').classList.toggle('show');
