@@ -75,13 +75,15 @@
         body.is-portal {
             background-image: none !important;
             background-color: transparent !important;
+            padding: 0 !important;
         }
         body.is-portal::before { display: none !important; }
         body.is-portal .btn-home { display: none !important; }
         body.is-portal .container { 
             box-shadow: none !important; 
             width: 100% !important; 
-            max-width: 1100px !important; 
+            max-width: 100% !important; 
+            border: none !important;
         }
         /* Oculta scrollbars internas no Portal para usar a do site pai */
         body.is-portal::-webkit-scrollbar { display: none !important; }
@@ -114,7 +116,7 @@
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             box-sizing: border-box;
             background-color: var(--bg-color);
             background-image: url('https://i.imgur.com/GMiX6Rv.png');
@@ -139,12 +141,13 @@
             position: relative;
             background-color: var(--container-bg);
             padding: 25px;
-            border-radius: 12px;
+            border-radius: 0;
             box-shadow: 0 0 30px var(--container-shadow);
             max-width: 100%;
             width: 100%;
+            min-height: 100vh;
             box-sizing: border-box;
-            border: 1px solid var(--container-border);
+            border: none;
             z-index: 1;
             padding-bottom: 40px;
         }
